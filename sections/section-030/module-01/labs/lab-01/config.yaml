@@ -1,0 +1,55 @@
+# Start Keycloak In Production Mode
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-088-lab-030-01"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1 and the module's workloads in `image-demo`"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-088-lab-030-01-setup"
+      description: "Switches Keycloak to `start` without a hostname or HTTP settings, so it fails to start"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits for the workloads the reference solution depends on"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-keycloak-ready"
+      description: "Confirms the Keycloak pod is ready and /health/ready answers UP"
+      type: "file"
+      source: "validation/validate-keycloak-ready.sh"
+    - name: "validate-production-mode"
+      description: "Confirms Keycloak runs `start`, never start-dev, with hostname-strict on"
+      type: "file"
+      source: "validation/validate-production-mode.sh"
+    - name: "validate-hostname-env"
+      description: "Confirms KC_HOSTNAME and KC_HTTP_ENABLED are set as environment variables"
+      type: "file"
+      source: "validation/validate-hostname-env.sh"
+    - name: "validate-issuer-fixed"
+      description: "Confirms the master realm issuer is http://keycloak:8080/realms/master for any Host header"
+      type: "file"
+      source: "validation/validate-issuer-fixed.sh"
+
+teardown:
+  keepCluster: false

@@ -1,0 +1,51 @@
+# Give A Service Client Its Own Token
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-088-lab-010-01"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1 and the tester pod, and waits until the administrator can sign in"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-088-lab-010-01-setup"
+      description: "Creates the realm inventory with inventory-reporter as a public client without a service account"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-client-confidential"
+      description: "Confirms inventory-reporter is a confidential client with service accounts on"
+      type: "file"
+      source: "validation/validate-client-confidential.sh"
+    - name: "validate-no-extra-grants"
+      description: "Confirms direct access grants and the standard flow are still off for inventory-reporter"
+      type: "file"
+      source: "validation/validate-no-extra-grants.sh"
+    - name: "validate-token-from-secret"
+      description: "Confirms the secret in inventory-reporter-credentials gets a client credentials token with azp inventory-reporter"
+      type: "file"
+      source: "validation/validate-token-from-secret.sh"
+
+teardown:
+  keepCluster: false

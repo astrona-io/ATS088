@@ -1,0 +1,51 @@
+# Make A User Sign-In Work End To End (section 010 capstone)
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-088-capstone-010"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1 and the tester pod, and waits until the administrator can sign in"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-088-capstone-010-setup"
+      description: "Creates the realm inventory with three faults that stop alice from getting tokens, and records the baseline IDs"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-id-token"
+      description: "Confirms alice gets an ID token through inventory-cli with preferred_username alice and the inventory issuer"
+      type: "file"
+      source: "validation/validate-id-token.sh"
+    - name: "validate-user-state"
+      description: "Confirms alice is enabled and has no required actions"
+      type: "file"
+      source: "validation/validate-user-state.sh"
+    - name: "validate-objects-kept"
+      description: "Confirms alice and inventory-cli were fixed, not recreated, and inventory-cli is still public"
+      type: "file"
+      source: "validation/validate-objects-kept.sh"
+
+teardown:
+  keepCluster: false

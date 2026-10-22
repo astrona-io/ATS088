@@ -1,0 +1,59 @@
+# Move An Application Out Of The Master Realm (section 020 capstone)
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-088-capstone-020"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1 in development mode and the tester pod into realmscapstone-demo"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-088-capstone-020-setup"
+      description: "Creates the disabled inventory realm and puts the application's client and user in master"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until the bootstrap administrator can sign in before running kcadm.sh"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The commands a correct learner runs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-realm-enabled"
+      description: "Confirms the realm inventory is enabled and still holds its realm role inventory-viewer"
+      type: "file"
+      source: "validation/validate-realm-enabled.sh"
+    - name: "validate-client-settings"
+      description: "Confirms inventory-cli in inventory is a public client with direct access grants on and the standard flow off"
+      type: "file"
+      source: "validation/validate-client-settings.sh"
+    - name: "validate-user-token"
+      description: "Confirms alice gets a token from the inventory realm with the right issuer"
+      type: "file"
+      source: "validation/validate-user-token.sh"
+    - name: "validate-master-clean"
+      description: "Confirms master holds no inventory-cli or alice and refuses the application's token request"
+      type: "file"
+      source: "validation/validate-master-clean.sh"
+    - name: "validate-admin-intact"
+      description: "Confirms the administrator admin still signs in to master"
+      type: "file"
+      source: "validation/validate-admin-intact.sh"
+
+teardown:
+  keepCluster: false

@@ -1,0 +1,40 @@
+# The inventory realm as a realm file. Keycloak imports it at start only when
+# this ConfigMap is mounted at /opt/keycloak/data/import and the server runs
+# with --import-realm.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inventory-realm
+  namespace: database-demo
+data:
+  inventory-realm.json: |
+    {
+      "realm": "inventory",
+      "enabled": true,
+      "users": [
+        {
+          "username": "alice",
+          "enabled": true,
+          "email": "alice@example.com",
+          "emailVerified": true,
+          "firstName": "Alice",
+          "lastName": "Example",
+          "credentials": [
+            {
+              "type": "password",
+              "value": "alice-password",
+              "temporary": false
+            }
+          ]
+        }
+      ],
+      "clients": [
+        {
+          "clientId": "inventory-cli",
+          "enabled": true,
+          "publicClient": true,
+          "standardFlowEnabled": false,
+          "directAccessGrantsEnabled": true
+        }
+      ]
+    }

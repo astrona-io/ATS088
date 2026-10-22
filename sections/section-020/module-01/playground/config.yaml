@@ -1,0 +1,26 @@
+# Separate Administration From Applications With Realms (PLAYGROUND) — Playground environment
+# A clean sandbox: it spins up, runs OS prep, then stays running for free
+# exploration. No task, no grading, no `astrona submit`.
+# Schema: internal/config.LabConfig.
+#
+# Runtime: kind cluster by default (no `runtime:` block).
+
+metadata:
+  name: "ats-088-playground-020-01"
+  docs:
+    guide: "docs/overview.md"
+
+bootstrap:
+  init:
+    - name: "prepare"
+      description: "Apply Keycloak 26.8.1 and the tester pod, and wait until Keycloak is ready. Only the master realm exists."
+      type: "file"
+      source: "bootstrap/prepare.sh"
+  manifests:
+    - name: "lab-start"
+      description: "Starting workloads (namespace, keycloak-admin Secret, keycloak Deployment and Service, tester client)."
+      type: "file"
+      source: "manifests/lab-start.yaml"
+
+teardown:
+  keepCluster: false

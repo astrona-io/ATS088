@@ -1,0 +1,55 @@
+# Move Keycloak To PostgreSQL With An Imported Realm
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-088-lab-030-02"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1 and the module's workloads in `database-demo`"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-088-lab-030-02-setup"
+      description: "Adds the inventory realm as a ConfigMap that nothing mounts; Keycloak stays on dev-file"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits for the workloads the reference solution depends on"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-db-from-secret"
+      description: "Confirms KC_DB is postgres and the credentials come from the keycloak-db Secret"
+      type: "file"
+      source: "validation/validate-db-from-secret.sh"
+    - name: "validate-realm-import"
+      description: "Confirms the inventory-realm ConfigMap is mounted at the import folder with --import-realm"
+      type: "file"
+      source: "validation/validate-realm-import.sh"
+    - name: "validate-realms-in-postgres"
+      description: "Confirms PostgreSQL holds the master and inventory realms"
+      type: "file"
+      source: "validation/validate-realms-in-postgres.sh"
+    - name: "validate-alice-token"
+      description: "Confirms alice gets a token from the inventory realm with the right issuer"
+      type: "file"
+      source: "validation/validate-alice-token.sh"
+
+teardown:
+  keepCluster: false

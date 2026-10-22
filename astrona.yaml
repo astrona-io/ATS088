@@ -1,0 +1,313 @@
+# Course manifest for ATS088 - Fundamentals & Getting Started (Keycloak).
+#
+# One entry per section under `modules:`. Each section lists, in order: its
+# README, then for each module the landing page (course.md), its parts
+# (course-0N-*.md), and right after the part a lab tests, the lab's
+# question.md reading and the `type: lab` entry. The module's summary page
+# comes last. The section capstone closes the section. Playgrounds are not
+# listed: the landing page's playground marker shows them. solution.md is
+# never listed.
+#
+# Every `path:` is relative to this file.
+
+training:
+  id: ATS088
+  title: "Keycloak: Fundamentals & Getting Started"
+  maturity: draft
+  description: >
+    Training material covering the Fundamentals & Getting Started domain of
+    the Keycloak training path: where Keycloak sits in the CNCF identity and
+    access management landscape, OAuth 2.0, OpenID Connect and SAML 2.0 and
+    the tokens they produce, the master realm against application realms,
+    managing realms with kcadm.sh, the Keycloak container image, development
+    and production mode, PostgreSQL as the database, and importing a realm at
+    start. Each module pairs a layered reader with an ungraded hands-on
+    playground and a graded practice lab. Each section closes with an
+    integration capstone.
+    Written for Keycloak 26.8.1.
+
+  certification:
+    name: Keycloak
+    code: KEYCLOAK
+    provider: Astrona
+    domain: Fundamentals & Getting Started
+    weight: 10
+
+modules:
+
+  - id: module-intro
+    title: "Introduction"
+    description: >
+      Start here. What this course trains you to do, how it is laid out, how
+      to get your machine ready with the astrona command-line tool, how the
+      content is written and checked, who maintains it, and how to report a
+      mistake.
+
+    content:
+      - type: reading
+        title: Introduction
+        path: sections/intro/README.md
+      - type: reading
+        title: "Welcome To The Course"
+        path: sections/intro/course-01-welcome.md
+      - type: reading
+        title: "Get Your Machine Ready"
+        path: sections/intro/course-02-get-your-machine-ready.md
+      - type: reading
+        title: "How This Course Is Made"
+        path: sections/intro/course-03-how-this-course-is-made.md
+
+  - id: module-010
+    title: "OAuth 2.0, OpenID Connect And SAML In Keycloak"
+    description: >
+      What an identity provider does and where Keycloak sits in the CNCF
+      landscape, then the protocols it speaks: OAuth 2.0 and the client
+      credentials grant, OpenID Connect with its ID token and discovery
+      document, and SAML 2.0, with a clear rule for choosing between them.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-010/README.md
+
+      - type: reading
+        title: "Get Tokens From Keycloak With OAuth 2.0 And OpenID Connect"
+        path: sections/section-010/module-01/course.md
+      - type: reading
+        title: "What Keycloak Does And Where It Fits"
+        path: sections/section-010/module-01/course-01-keycloak-in-the-cncf-landscape.md
+      - type: reading
+        title: "OAuth 2.0 And The Client Credentials Grant"
+        path: sections/section-010/module-01/course-02-oauth2-and-the-client-credentials-grant.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Give A Service Client Its Own Token Lab"
+        path: sections/section-010/module-01/labs/lab-01
+        difficulty: beginner
+        estimated_duration: 15m
+        topic: tokens
+        task_kind: troubleshooting
+        tags: [oauth2, client-credentials, confidential-client, service-account, client-secret, kubernetes-secret]
+        learning_goals:
+          - Turn a public client into a confidential client with a service account
+          - Store the client secret in a Kubernetes Secret the service can read
+          - Prove the fix with a client credentials token request from the tester pod
+        resources:
+          - name: "Server Administration Guide: OpenID Connect clients"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc_clients
+          - name: "Server Administration Guide: service accounts"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#_service_accounts
+          - name: "RFC 6749 section 4.4: Client Credentials Grant"
+            url: https://datatracker.ietf.org/doc/html/rfc6749#section-4.4
+      - type: reading
+        title: "OpenID Connect, The ID Token And The Discovery Document"
+        path: sections/section-010/module-01/course-03-openid-connect-and-the-id-token.md
+      - type: reading
+        title: "SAML 2.0 And Choosing A Protocol"
+        path: sections/section-010/module-01/course-04-saml-and-choosing-a-protocol.md
+      - type: reading
+        title: Summary
+        path: sections/section-010/module-01/course-05-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-010/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Make A User Sign-In Work End To End Capstone"
+        path: sections/section-010/capstone/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 30m
+        topic: tokens
+        task_kind: troubleshooting
+        tags: [oidc, id-token, password-grant, public-client, users, required-actions, jwt]
+        learning_goals:
+          - Find why a user cannot get tokens from the error the token endpoint returns
+          - Fix the client and the user without recreating either of them
+          - Prove the fix with an ID token whose claims name the right user and issuer
+        resources:
+          - name: "Server Administration Guide: managing users"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#assembly-managing-users_server_administration_guide
+          - name: "Securing applications: OpenID Connect endpoints"
+            url: https://www.keycloak.org/securing-apps/oidc-layers
+          - name: "OpenID Connect Core 1.0: ID Token"
+            url: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
+
+  - id: module-020
+    title: "The Master Realm And Application Realms"
+    description: >
+      Why the master realm is only for administration, what a realm holds and
+      the URLs it publishes, and how to create and manage application realms,
+      users and clients from the terminal with kcadm.sh.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-020/README.md
+
+      - type: reading
+        title: "Separate Administration From Applications With Realms"
+        path: sections/section-020/module-01/course.md
+      - type: reading
+        title: "The Master Realm And The Bootstrap Administrator"
+        path: sections/section-020/module-01/course-01-the-master-realm-and-the-bootstrap-admin.md
+      - type: reading
+        title: "What A Realm Holds, And Its URLs"
+        path: sections/section-020/module-01/course-02-what-a-realm-holds.md
+      - type: reading
+        title: "Managing Realms With kcadm.sh"
+        path: sections/section-020/module-01/course-03-managing-realms-with-kcadm.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Create An Application Realm With kcadm.sh Lab"
+        path: sections/section-020/module-01/labs/lab-01
+        difficulty: beginner
+        estimated_duration: 20m
+        topic: realms
+        task_kind: build
+        tags: [kcadm, application-realm, users, public-client, password-grant, admin-rest-api]
+        learning_goals:
+          - Sign kcadm.sh in to the master realm and create an application realm
+          - Create a user with a complete profile and a client in that realm
+          - Prove the realm works with a token whose issuer names the new realm
+        resources:
+          - name: "Server Administration Guide: Admin CLI"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#admin-cli
+          - name: "Server Administration Guide: configuring realms"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#configuring-realms
+      - type: reading
+        title: Summary
+        path: sections/section-020/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-020/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Move An Application Out Of The Master Realm Capstone"
+        path: sections/section-020/capstone/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 30m
+        topic: realms
+        task_kind: migration
+        tags: [master-realm, application-realm, kcadm, users, public-client, bootstrap-admin]
+        learning_goals:
+          - Enable a disabled application realm and move a client and a user into it
+          - Remove the application's objects from the master realm without touching the administrator
+          - Prove the move with a token from the application realm and a refused request to master
+        resources:
+          - name: "Server Administration Guide: the master realm"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#the-master-realm
+          - name: "Server Administration Guide: Admin CLI"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#admin-cli
+
+  - id: module-030
+    title: "Running Keycloak From The Container Image"
+    description: >
+      What is inside the Keycloak container image, how options reach the
+      server, build options against runtime options, the difference between
+      development and production mode, health checks, PostgreSQL as the
+      database, and importing a realm when the server starts.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-030/README.md
+
+      - type: reading
+        title: "Run Keycloak From The Container Image In Production Mode"
+        path: sections/section-030/module-01/course.md
+      - type: reading
+        title: "Inside The Keycloak Container Image"
+        path: sections/section-030/module-01/course-01-inside-the-container-image.md
+      - type: reading
+        title: "Configuration Sources, Build Options And Runtime Options"
+        path: sections/section-030/module-01/course-02-configuration-sources-and-build-options.md
+      - type: reading
+        title: "Production Mode, The Hostname And Health Checks"
+        path: sections/section-030/module-01/course-03-production-mode-hostname-and-health.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Start Keycloak In Production Mode Lab"
+        path: sections/section-030/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: server-configuration
+        task_kind: troubleshooting
+        tags: [production-mode, hostname, http-enabled, health-endpoints, env-vars, container-image]
+        learning_goals:
+          - Read why Keycloak refuses to start in production mode from its log
+          - Configure the hostname and HTTP with environment variables without going back to start-dev
+          - Prove the fix with a ready pod and a discovery document whose issuer matches the hostname
+        resources:
+          - name: "Configuring the hostname"
+            url: https://www.keycloak.org/server/hostname
+          - name: "Configuring Keycloak"
+            url: https://www.keycloak.org/server/configuration
+          - name: "Running Keycloak in a container"
+            url: https://www.keycloak.org/server/containers
+          - name: "Tracking instance status with health checks"
+            url: https://www.keycloak.org/observability/health
+      - type: reading
+        title: Summary
+        path: sections/section-030/module-01/course-04-summary.md
+
+      - type: reading
+        title: "Store Keycloak Data In PostgreSQL And Import A Realm"
+        path: sections/section-030/module-02/course.md
+      - type: reading
+        title: "From dev-file To PostgreSQL"
+        path: sections/section-030/module-02/course-01-from-dev-file-to-postgresql.md
+      - type: reading
+        title: "Importing And Exporting A Realm"
+        path: sections/section-030/module-02/course-02-importing-and-exporting-a-realm.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Move Keycloak To PostgreSQL With An Imported Realm Lab"
+        path: sections/section-030/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: database
+        task_kind: migration
+        tags: [postgresql, dev-file, db-options, kubernetes-secret, realm-import, env-vars]
+        learning_goals:
+          - Point Keycloak at PostgreSQL with database options read from a Kubernetes Secret
+          - Import a realm at start from a ConfigMap mounted at the import directory
+          - Prove the data lives in PostgreSQL and the imported user can get a token
+        resources:
+          - name: "Configuring the database"
+            url: https://www.keycloak.org/server/db
+          - name: "Importing and exporting realms"
+            url: https://www.keycloak.org/server/importExport
+      - type: reading
+        title: Summary
+        path: sections/section-030/module-02/course-03-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-030/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Run A Production Keycloak On PostgreSQL Capstone"
+        path: sections/section-030/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 40m
+        topic: server-configuration
+        task_kind: troubleshooting
+        tags: [production-mode, hostname, health-endpoints, postgresql, kubernetes-secret, realm-import]
+        learning_goals:
+          - Find several independent faults in a Keycloak Deployment from its log, events and probes
+          - Run Keycloak in production mode on PostgreSQL with the database password read from a Secret
+          - Prove the result with a ready pod, the right issuer, realm rows in PostgreSQL and a working token
+        resources:
+          - name: "Configuring Keycloak for production"
+            url: https://www.keycloak.org/server/configuration-production
+          - name: "Configuring the database"
+            url: https://www.keycloak.org/server/db
+          - name: "Configuring the hostname"
+            url: https://www.keycloak.org/server/hostname
