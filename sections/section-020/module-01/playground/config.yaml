@@ -9,7 +9,6 @@ metadata:
   name: "ats-088-playground-020-01"
   docs:
     guide: "docs/overview.md"
-
 bootstrap:
   init:
     - name: "prepare"
@@ -21,6 +20,10 @@ bootstrap:
       description: "Starting workloads (namespace, keycloak-admin Secret, keycloak Deployment and Service, tester client)."
       type: "file"
       source: "manifests/lab-start.yaml"
-
 teardown:
   keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - nicolaka/netshoot:v0.13
+      - quay.io/keycloak/keycloak:26.8.1

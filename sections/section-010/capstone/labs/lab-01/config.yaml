@@ -9,7 +9,6 @@ metadata:
     question: "question.md"
     examQuestion: "question.md"
     prerequisites: "prerequisites.md"
-
 bootstrap:
   init:
     - name: "deploy-keycloak"
@@ -20,7 +19,6 @@ bootstrap:
       description: "Creates the realm inventory with three faults that stop alice from getting tokens, and records the baseline IDs"
       type: "file"
       source: "bootstrap/02-seed-state.sh"
-
 testing:
   init:
     - name: "wait-for-keycloak"
@@ -31,7 +29,6 @@ testing:
       description: "The remediation a correct learner performs; used by `astrona test`"
       type: "file"
       source: "solution/apply.sh"
-
 validation:
   scripts:
     - name: "validate-id-token"
@@ -46,6 +43,10 @@ validation:
       description: "Confirms alice and inventory-cli were fixed, not recreated, and inventory-cli is still public"
       type: "file"
       source: "validation/validate-objects-kept.sh"
-
 teardown:
   keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - nicolaka/netshoot:v0.13
+      - quay.io/keycloak/keycloak:26.8.1
