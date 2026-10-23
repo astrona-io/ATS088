@@ -2,6 +2,21 @@
 # PASS when alice gets a token from the inventory realm with the password grant
 # and its claims name alice and the issuer http://keycloak:8080/realms/inventory.
 set -uo pipefail
+# grep -q stops reading at the first match; under pipefail the command
+# writing into the pipe then fails with SIGPIPE and a match looks like a
+# failure. This wrapper reads all input instead and keeps grep's exit status.
+grep() {
+  local arg quiet=0 args=()
+  for arg in "$@"; do
+    case "$arg" in
+      --quiet|--silent) quiet=1 ;;
+      --*) args+=("$arg") ;;
+      -*q*) quiet=1; [ "$arg" = "-q" ] || args+=("${arg//q/}") ;;
+      *) args+=("$arg") ;;
+    esac
+  done
+  if [ "$quiet" = 1 ]; then command grep "${args[@]}" >/dev/null; else command grep "$@"; fi
+}
 
 NS="database-demo"
 EXPECTED_ISSUER="http://keycloak:8080/realms/inventory"
