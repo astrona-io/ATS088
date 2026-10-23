@@ -66,10 +66,10 @@ kubectl -n realms-demo exec deploy/tester -- curl -s \
   -d username=admin -d password=admin \
   http://keycloak:8080/realms/master/protocol/openid-connect/token \
   | jq -r .access_token \
-  | jq -R 'split(".")[1] | gsub("-";"+") | gsub("_";"/") | . + ("=" * ((4 - length % 4) % 4)) | @base64d | fromjson | {iss, azp, preferred_username}'
+  | jq -R 'split(".")[1] | gsub("-";"+") | gsub("_";"/") | . + ("=" * ((4 - length % 4) % 4)) | @base64d | fromjson | {iss, azp, typ}'
 ```
 
-The first `jq` takes the access token from the JSON response. The second one decodes the middle part of the token, the payload, and prints three claims. `iss` (issuer) is `http://keycloak:8080/realms/master`, `azp` (the client the token was issued to) is `admin-cli`, and `preferred_username` is `admin`. The realm name sits inside the issuer URL, and an API that trusts this issuer trusts every user of `master`.
+The first `jq` takes the access token from the JSON response. The second one decodes the middle part of the token, the payload, and prints three claims. `iss` (issuer) is `http://keycloak:8080/realms/master`, `azp` (the client the token was issued to) is `admin-cli`, and `typ` is `Bearer`. The token has no claim with the user name: `admin-cli` issues lightweight access tokens, which leave out user claims such as `sub` and `preferred_username` to keep the token small. The realm name sits inside the issuer URL, and an API that trusts this issuer trusts every user of `master`.
 
 You now know where `master` and its first user come from, and why an application gets a realm of its own. The open question is what a realm actually holds, and which URLs change when you create a second one.
 

@@ -5,18 +5,17 @@ set -uo pipefail
 
 NS="realmscapstone-demo"
 
-USERNAME="$(kubectl -n "$NS" exec -i deploy/tester -- sh -s 2>/dev/null <<'SCRIPT'
-token=$(curl -s -d grant_type=password -d client_id=admin-cli \
+# admin-cli issues lightweight access tokens in Keycloak 26.8.1 (the client
+# attribute client.use.lightweight.access.token.enabled is true): the token has
+# no sub or preferred_username. The password grant only succeeds for an enabled
+# user with the right password, so a token issued for admin is the proof.
+TOKEN="$(kubectl -n "$NS" exec -i deploy/tester -- curl -s \
+  -d grant_type=password -d client_id=admin-cli \
   -d username=admin -d password=admin \
-  http://keycloak:8080/realms/master/protocol/openid-connect/token \
-  | jq -r '.access_token // empty' 2>/dev/null)
-[ -z "$token" ] && exit 0
-printf '%s' "$token" | jq -R -r 'split(".")[1] | gsub("-";"+") | gsub("_";"/")
-  | . + ("=" * ((4 - length % 4) % 4)) | @base64d | fromjson | .preferred_username'
-SCRIPT
-)"
+  http://keycloak:8080/realms/master/protocol/openid-connect/token 2>/dev/null \
+  | jq -r '.access_token // empty' 2>/dev/null)"
 
-if [ "$USERNAME" != "admin" ]; then
+if [ -z "$TOKEN" ]; then
   echo "FAIL: the administrator admin can no longer sign in to master with its password. Leave the admin user untouched."
   exit 1
 fi
