@@ -30,8 +30,6 @@ training:
     name: Keycloak
     code: KEYCLOAK
     provider: Astrona
-    domain: Fundamentals & Getting Started
-    weight: 10
 
 modules:
 
