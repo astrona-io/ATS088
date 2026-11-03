@@ -1,0 +1,246 @@
+# Knowledge check for the module Observe And Operate Keycloak. Listed in astrona.yaml as a `type: quiz` entry after the module.
+schema_version: 1
+kind: question_bank
+id: ats088-030-m04
+course_id: ATS088
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: module
+  id: module-04
+  title: "Observe And Operate Keycloak"
+placement:
+  position: after
+  reading: sections/section-030/module-04/course-05-summary.md
+questions:
+  - id: ats088-030-m04-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Set a category level"
+    source_readings:
+      - sections/section-030/module-04/course-01-logging-levels-and-formats.md
+    prompt: "Which KC_LOG_LEVEL keeps the root at info and raises only the events category to debug?"
+    options:
+      - id: a
+        text: "info:org.keycloak.events,debug"
+        explanation: "Not correct. The category comes before the colon."
+      - id: b
+        text: "info,org.keycloak.events:debug"
+        explanation: "Correct. Items are comma separated and categories use a colon."
+      - id: c
+        text: "debug"
+        explanation: "Not correct. That sets the root to debug."
+      - id: d
+        text: "org.keycloak.events=debug"
+        explanation: "Not correct. The separator is a colon."
+    correct_option: b
+    explanation: "Correct. Items are comma separated and categories use a colon."
+
+  - id: ats088-030-m04-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose a log format"
+    source_readings:
+      - sections/section-030/module-04/course-01-logging-levels-and-formats.md
+    prompt: "Which option value makes every console log line a JSON object?"
+    options:
+      - id: a
+        text: "KC_LOG=file"
+        explanation: "Not correct. That writes to a file."
+      - id: b
+        text: "KC_METRICS_ENABLED=json"
+        explanation: "Not correct. That option turns on metrics."
+      - id: c
+        text: "KC_LOG_CONSOLE_OUTPUT=json"
+        explanation: "Correct. The console output option accepts default and json."
+      - id: d
+        text: "KC_LOG_LEVEL=json"
+        explanation: "Not correct. That option sets levels."
+    correct_option: c
+    explanation: "Correct. The console output option accepts default and json."
+
+  - id: ats088-030-m04-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the previous log"
+    source_readings:
+      - sections/section-030/module-04/course-01-logging-levels-and-formats.md
+    prompt: "After a pod restarts, how do you read the log of the container before the restart?"
+    options:
+      - id: a
+        text: "kubectl logs --tail=0"
+        explanation: "Not correct. That prints nothing."
+      - id: b
+        text: "kubectl get logs"
+        explanation: "Not correct. There is no such resource."
+      - id: c
+        text: "kubectl describe logs"
+        explanation: "Not correct. describe shows events, not the log."
+      - id: d
+        text: "kubectl logs --previous"
+        explanation: "Correct. The current container only holds the log since the restart."
+    correct_option: d
+    explanation: "Correct. The current container only holds the log since the restart."
+
+  - id: ats088-030-m04-q04
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Find the management port"
+    source_readings:
+      - sections/section-030/module-04/course-02-metrics-on-the-management-port.md
+    prompt: "On which port does Keycloak serve /metrics and /health?"
+    options:
+      - id: a
+        text: "9000"
+        explanation: "Correct. The management interface listens on 9000."
+      - id: b
+        text: "8080"
+        explanation: "Not correct. That is the main HTTP port."
+      - id: c
+        text: "8443"
+        explanation: "Not correct. That is the usual HTTPS port."
+      - id: d
+        text: "5432"
+        explanation: "Not correct. That is a database port."
+    correct_option: a
+    explanation: "Correct. The management interface listens on 9000."
+
+  - id: ats088-030-m04-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Turn on metrics"
+    source_readings:
+      - sections/section-030/module-04/course-02-metrics-on-the-management-port.md
+    prompt: "Which setting makes /metrics return 200?"
+    options:
+      - id: a
+        text: "KC_HTTP_ENABLED=true"
+        explanation: "Not correct. That allows plain HTTP."
+      - id: b
+        text: "KC_METRICS_ENABLED=true"
+        explanation: "Correct. Metrics are off until this build option is true."
+      - id: c
+        text: "KC_HEALTH_ENABLED=true"
+        explanation: "Not correct. That serves the health paths."
+      - id: d
+        text: "KC_LOG_LEVEL=metrics"
+        explanation: "Not correct. That is not a level."
+    correct_option: b
+    explanation: "Correct. Metrics are off until this build option is true."
+
+  - id: ats088-030-m04-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the metric format"
+    source_readings:
+      - sections/section-030/module-04/course-02-metrics-on-the-management-port.md
+    prompt: "In the Prometheus text format, what is a counter?"
+    options:
+      - id: a
+        text: "A comment line"
+        explanation: "Not correct. Comments start with #."
+      - id: b
+        text: "A log level"
+        explanation: "Not correct. Levels belong to logging."
+      - id: c
+        text: "A value that only goes up"
+        explanation: "Correct. Request counts are counters."
+      - id: d
+        text: "A value that goes up and down"
+        explanation: "Not correct. That describes a gauge."
+    correct_option: c
+    explanation: "Correct. Request counts are counters."
+
+  - id: ats088-030-m04-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain the heap"
+    source_readings:
+      - sections/section-030/module-04/course-03-memory-resources-and-restarts.md
+    prompt: "By default, how is the maximum Java heap of Keycloak set in a container?"
+    options:
+      - id: a
+        text: "As a fixed 512 MB"
+        explanation: "Not correct. The size follows the limit."
+      - id: b
+        text: "As the memory of the node"
+        explanation: "Not correct. The container limit decides."
+      - id: c
+        text: "It has no maximum"
+        explanation: "Not correct. The heap is bounded."
+      - id: d
+        text: "As a percentage of the container memory limit"
+        explanation: "Correct. The default is 70 percent of the limit."
+    correct_option: d
+    explanation: "Correct. The default is 70 percent of the limit."
+
+  - id: ats088-030-m04-q08
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Diagnose a silent restart"
+    source_readings:
+      - sections/section-030/module-04/course-03-memory-resources-and-restarts.md
+    prompt: "A pod restarts and its log ends without an error. Which field shows the likely cause?"
+    options:
+      - id: a
+        text: "lastState with reason OOMKilled"
+        explanation: "Correct. The kernel ends the process, so the log has no message."
+      - id: b
+        text: "the Service type"
+        explanation: "Not correct. A Service does not restart pods."
+      - id: c
+        text: "the image tag"
+        explanation: "Not correct. The tag does not explain a restart."
+      - id: d
+        text: "the realm name"
+        explanation: "Not correct. The realm is unrelated."
+    correct_option: a
+    explanation: "Correct. The kernel ends the process, so the log has no message."
+
+  - id: ats088-030-m04-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Match probes to paths"
+    source_readings:
+      - sections/section-030/module-04/course-03-memory-resources-and-restarts.md
+    prompt: "Which health path should the readiness probe use?"
+    options:
+      - id: a
+        text: "/metrics"
+        explanation: "Not correct. That is not a health path."
+      - id: b
+        text: "/health/ready"
+        explanation: "Correct. Readiness controls whether the pod gets traffic."
+      - id: c
+        text: "/health/started"
+        explanation: "Not correct. That is for the startup probe."
+      - id: d
+        text: "/health/live"
+        explanation: "Not correct. That is for liveness."
+    correct_option: b
+    explanation: "Correct. Readiness controls whether the pod gets traffic."
+
+  - id: ats088-030-m04-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Plan an upgrade"
+    source_readings:
+      - sections/section-030/module-04/course-04-operating-and-troubleshooting.md
+    prompt: "What should you do before changing the image tag to a new Keycloak version?"
+    options:
+      - id: a
+        text: "Delete the pod"
+        explanation: "Not correct. Deleting a pod protects nothing."
+      - id: b
+        text: "Raise the root log level"
+        explanation: "Not correct. The level does not protect data."
+      - id: c
+        text: "Back up the database"
+        explanation: "Correct. Schema migration can be one-way, so a rollback needs the backup."
+      - id: d
+        text: "Use the latest tag"
+        explanation: "Not correct. A floating tag can change the version silently."
+    correct_option: c
+    explanation: "Correct. Schema migration can be one-way, so a rollback needs the backup."
+

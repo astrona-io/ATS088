@@ -1,0 +1,52 @@
+# Add The Audience inventory-api To The Tokens Of inventory-cli
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-088-lab-010-03"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1 and the tester pod, and waits until the administrator can sign in"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-088-lab-010-03-setup"
+      description: "Creates the realm inventory with alice, inventory-cli and inventory-api, without an audience mapper"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+validation:
+  scripts:
+    - name: "validate-audience-claim"
+      description: "Confirms a new access token of alice from inventory-cli lists inventory-api in aud"
+      type: "file"
+      source: "validation/validate-audience-claim.sh"
+    - name: "validate-introspection-active"
+      description: "Confirms inventory-api introspects the new token as active"
+      type: "file"
+      source: "validation/validate-introspection-active.sh"
+    - name: "validate-scope-and-lifespan"
+      description: "Confirms the audience is not added to shared client scopes and the lifespan is unchanged"
+      type: "file"
+      source: "validation/validate-scope-and-lifespan.sh"
+teardown:
+  keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - nicolaka/netshoot:v0.13
+      - quay.io/keycloak/keycloak:26.8.1

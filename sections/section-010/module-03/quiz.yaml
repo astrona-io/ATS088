@@ -1,0 +1,246 @@
+# Knowledge check for the module Validate Tokens In A Resource Server. Listed in astrona.yaml as a `type: quiz` entry after the module.
+schema_version: 1
+kind: question_bank
+id: ats088-010-m03
+course_id: ATS088
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: module
+  id: module-03
+  title: "Validate Tokens In A Resource Server"
+placement:
+  position: after
+  reading: sections/section-010/module-03/course-05-summary.md
+questions:
+  - id: ats088-010-m03-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Locate the signing keys"
+    source_readings:
+      - sections/section-010/module-03/course-01-check-the-signature-with-the-realm-keys.md
+    prompt: "Where does a realm publish the public keys that verify its tokens?"
+    options:
+      - id: a
+        text: "/health/ready"
+        explanation: "Not correct. That is a health endpoint."
+      - id: b
+        text: "/realms/<realm>/protocol/openid-connect/certs"
+        explanation: "Correct. The discovery document names it in jwks_uri."
+      - id: c
+        text: "/realms/<realm>/account"
+        explanation: "Not correct. That is the Account Console."
+      - id: d
+        text: "/admin/realms/<realm>/keys/private"
+        explanation: "Not correct. Private keys are never published."
+    correct_option: b
+    explanation: "Correct. The discovery document names it in jwks_uri."
+
+  - id: ats088-010-m03-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read a token header"
+    source_readings:
+      - sections/section-010/module-03/course-01-check-the-signature-with-the-realm-keys.md
+    prompt: "What does the kid in a token header identify?"
+    options:
+      - id: a
+        text: "The client"
+        explanation: "Not correct. The client is in azp."
+      - id: b
+        text: "The realm"
+        explanation: "Not correct. The realm is in iss."
+      - id: c
+        text: "The key in the key set that signed the token"
+        explanation: "Correct. An API picks the key with the same kid."
+      - id: d
+        text: "The user"
+        explanation: "Not correct. The user is in the sub claim."
+    correct_option: c
+    explanation: "Correct. An API picks the key with the same kid."
+
+  - id: ats088-010-m03-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain a failed signature"
+    source_readings:
+      - sections/section-010/module-03/course-01-check-the-signature-with-the-realm-keys.md
+    prompt: "You add one character to the end of a valid access token and call the UserInfo endpoint. What happens?"
+    options:
+      - id: a
+        text: "Keycloak returns 200 because the claims are unchanged."
+        explanation: "Not correct. The claims are not enough without the signature."
+      - id: b
+        text: "Keycloak returns 404."
+        explanation: "Not correct. The endpoint exists."
+      - id: c
+        text: "Keycloak issues a new token."
+        explanation: "Not correct. Keycloak does not repair tokens."
+      - id: d
+        text: "Keycloak returns 401 because the signature no longer matches."
+        explanation: "Correct. The signature covers the exact token text."
+    correct_option: d
+    explanation: "Correct. The signature covers the exact token text."
+
+  - id: ats088-010-m03-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "List the claims to check"
+    source_readings:
+      - sections/section-010/module-03/course-02-claims-a-resource-server-must-check.md
+    prompt: "Which claim stops a token issued for service A from being replayed against service B?"
+    options:
+      - id: a
+        text: "aud"
+        explanation: "Correct. The API checks that aud lists its own identifier."
+      - id: b
+        text: "iat"
+        explanation: "Not correct. iat is the time of issue."
+      - id: c
+        text: "typ"
+        explanation: "Not correct. typ is the token type."
+      - id: d
+        text: "jti"
+        explanation: "Not correct. jti is a unique token id."
+    correct_option: a
+    explanation: "Correct. The API checks that aud lists its own identifier."
+
+  - id: ats088-010-m03-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Check the issuer"
+    source_readings:
+      - sections/section-010/module-03/course-02-claims-a-resource-server-must-check.md
+    prompt: "How should an API compare the iss claim?"
+    options:
+      - id: a
+        text: "Only the realm name"
+        explanation: "Not correct. The realm name alone is not an issuer."
+      - id: b
+        text: "Exactly with the realm URL it expects"
+        explanation: "Correct. The scheme, host, port and path must all match."
+      - id: c
+        text: "Only the host name"
+        explanation: "Not correct. A partial match accepts other realms."
+      - id: d
+        text: "Ignore it if the signature is good"
+        explanation: "Not correct. The issuer separates realms and servers."
+    correct_option: b
+    explanation: "Correct. The scheme, host, port and path must all match."
+
+  - id: ats088-010-m03-q06
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Aim a token at an API"
+    source_readings:
+      - sections/section-010/module-03/course-02-claims-a-resource-server-must-check.md
+    prompt: "Where should an audience mapper for inventory-api be created so that only inventory-cli is affected?"
+    options:
+      - id: a
+        text: "In the master realm"
+        explanation: "Not correct. The master realm is unrelated."
+      - id: b
+        text: "In the inventory-api client"
+        explanation: "Not correct. The mapper must be on the client that asks for the token."
+      - id: c
+        text: "In the dedicated scope of inventory-cli"
+        explanation: "Correct. The dedicated scope belongs to that one client."
+      - id: d
+        text: "In the profile client scope"
+        explanation: "Not correct. Every client that uses profile would change."
+    correct_option: c
+    explanation: "Correct. The dedicated scope belongs to that one client."
+
+  - id: ats088-010-m03-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Authenticate an introspection call"
+    source_readings:
+      - sections/section-010/module-03/course-03-token-introspection.md
+    prompt: "Which client can call the introspection endpoint?"
+    options:
+      - id: a
+        text: "Any public client"
+        explanation: "Not correct. A public client has no secret."
+      - id: b
+        text: "Any anonymous caller"
+        explanation: "Not correct. Anonymous callers get 401."
+      - id: c
+        text: "Only the master administrator"
+        explanation: "Not correct. Any authenticated confidential client works."
+      - id: d
+        text: "A confidential client that sends its secret"
+        explanation: "Correct. The endpoint requires client authentication."
+    correct_option: d
+    explanation: "Correct. The endpoint requires client authentication."
+
+  - id: ats088-010-m03-q08
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Choose a validation method"
+    source_readings:
+      - sections/section-010/module-03/course-03-token-introspection.md
+    prompt: "An API must stop access as soon as a user logs out. Which check does that?"
+    options:
+      - id: a
+        text: "Introspection, which returns active false"
+        explanation: "Correct. Introspection sees the current session."
+      - id: b
+        text: "Checking the signature only"
+        explanation: "Not correct. The signature stays valid until exp."
+      - id: c
+        text: "Checking iss only"
+        explanation: "Not correct. iss does not change at logout."
+      - id: d
+        text: "Checking exp only"
+        explanation: "Not correct. exp does not change at logout."
+    correct_option: a
+    explanation: "Correct. Introspection sees the current session."
+
+  - id: ats088-010-m03-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Describe the effect of a logout"
+    source_readings:
+      - sections/section-010/module-03/course-04-logout-and-token-lifetime.md
+    prompt: "After a logout, what happens to the refresh token of that session?"
+    options:
+      - id: a
+        text: "It changes its signature"
+        explanation: "Not correct. The token text does not change."
+      - id: b
+        text: "Using it returns invalid_grant"
+        explanation: "Correct. The session no longer exists."
+      - id: c
+        text: "It still returns new tokens"
+        explanation: "Not correct. The session that backs it is gone."
+      - id: d
+        text: "It becomes an offline token"
+        explanation: "Not correct. Offline tokens come from the offline_access scope."
+    correct_option: b
+    explanation: "Correct. The session no longer exists."
+
+  - id: ats088-010-m03-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain the gap after a logout"
+    source_readings:
+      - sections/section-010/module-03/course-04-logout-and-token-lifetime.md
+    prompt: "Why can an API that checks only the signature accept an access token after the user logged out?"
+    options:
+      - id: a
+        text: "The refresh token extends it"
+        explanation: "Not correct. The refresh token does not change the access token."
+      - id: b
+        text: "Logout does not exist for public clients"
+        explanation: "Not correct. Public clients can log out."
+      - id: c
+        text: "The token stays signed and unexpired until exp"
+        explanation: "Correct. Nobody can recall a signed token. Short lifespans limit the gap."
+      - id: d
+        text: "Keycloak keeps the session open"
+        explanation: "Not correct. The logout ended the session."
+    correct_option: c
+    explanation: "Correct. Nobody can recall a signed token. Short lifespans limit the gap."
+

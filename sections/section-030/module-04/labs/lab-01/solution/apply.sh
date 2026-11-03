@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Reference remediation, applied only by `astrona test` (the `testing:` block).
+# `astrona run` never runs this, so the lab stays broken for the student.
+# Taken from solution.md - if one changes, change the other.
+set -eu
+
+NAMESPACE="ops-demo"
+
+kcadm() {
+  kubectl -n "$NAMESPACE" exec -i deploy/keycloak -- \
+    /opt/keycloak/bin/kcadm.sh "$@" --config /tmp/kcadm.config
+}
+kcadm config credentials --server http://localhost:8080 --realm master --user admin --password admin
+
+kubectl -n "$NAMESPACE" set env deployment/keycloak \
+  KC_METRICS_ENABLED=true \
+  KC_LOG_CONSOLE_OUTPUT=json \
+  KC_LOG_LEVEL=info,org.keycloak.events:debug
+kubectl -n "$NAMESPACE" rollout status deployment/keycloak --timeout=600s

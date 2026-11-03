@@ -44,6 +44,16 @@ The playground holds the namespace `authcode-demo` with Keycloak, a `tester` pod
 4. Refresh Tokens, Token Lifespans And Sessions
 5. Summary
 
+### 3. Validate Tokens In A Resource Server
+
+The playground holds the namespace `tokenval-demo` with Keycloak, a `tester` pod, the realm `inventory` with the user `alice`, the public client `inventory-cli` and the confidential client `inventory-api`.
+
+1. Check The Signature With The Realm Keys
+2. Claims A Resource Server Must Check, followed by the lab **Add The Audience inventory-api To The Tokens Of inventory-cli**
+3. Token Introspection
+4. Logout And Token Lifetime
+5. Summary
+
 ## Section capstone: Make A User Sign-In Work End To End
 
 The capstone is one graded scenario that combines the section's modules. In the namespace `protocolscapstone-demo`, the user `alice` cannot get any token from the realm `inventory`. The token endpoint refuses each request, and there is more than one reason. You find each fault from the error Keycloak returns, fix the client and the user without recreating them, and prove the fix with an ID token. Work it after the module lab.

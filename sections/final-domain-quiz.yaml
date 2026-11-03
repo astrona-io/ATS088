@@ -358,3 +358,95 @@ questions:
         explanation: "Not correct. Those do not affect the certificate load."
     correct_option: c
     explanation: "Correct. A path that differs by one directory is the most common cause."
+
+  - id: ats088-final-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "List the claims to check"
+    source_readings:
+      - sections/section-010/module-03/course-02-claims-a-resource-server-must-check.md
+    prompt: "Which claim stops a token issued for service A from being replayed against service B?"
+    options:
+      - id: a
+        text: "aud"
+        explanation: "Correct. The API checks that aud lists its own identifier."
+      - id: b
+        text: "iat"
+        explanation: "Not correct. iat is the time of issue."
+      - id: c
+        text: "typ"
+        explanation: "Not correct. typ is the token type."
+      - id: d
+        text: "jti"
+        explanation: "Not correct. jti is a unique token id."
+    correct_option: a
+    explanation: "Correct. The API checks that aud lists its own identifier."
+
+  - id: ats088-final-q17
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Choose a validation method"
+    source_readings:
+      - sections/section-010/module-03/course-03-token-introspection.md
+    prompt: "An API must stop access as soon as a user logs out. Which check does that?"
+    options:
+      - id: a
+        text: "Introspection, which returns active false"
+        explanation: "Correct. Introspection sees the current session."
+      - id: b
+        text: "Checking the signature only"
+        explanation: "Not correct. The signature stays valid until exp."
+      - id: c
+        text: "Checking iss only"
+        explanation: "Not correct. iss does not change at logout."
+      - id: d
+        text: "Checking exp only"
+        explanation: "Not correct. exp does not change at logout."
+    correct_option: a
+    explanation: "Correct. Introspection sees the current session."
+
+  - id: ats088-final-q18
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Find the management port"
+    source_readings:
+      - sections/section-030/module-04/course-02-metrics-on-the-management-port.md
+    prompt: "On which port does Keycloak serve /metrics and /health?"
+    options:
+      - id: a
+        text: "9000"
+        explanation: "Correct. The management interface listens on 9000."
+      - id: b
+        text: "8080"
+        explanation: "Not correct. That is the main HTTP port."
+      - id: c
+        text: "8443"
+        explanation: "Not correct. That is the usual HTTPS port."
+      - id: d
+        text: "5432"
+        explanation: "Not correct. That is a database port."
+    correct_option: a
+    explanation: "Correct. The management interface listens on 9000."
+
+  - id: ats088-final-q19
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Diagnose a silent restart"
+    source_readings:
+      - sections/section-030/module-04/course-03-memory-resources-and-restarts.md
+    prompt: "A pod restarts and its log ends without an error. Which field shows the likely cause?"
+    options:
+      - id: a
+        text: "lastState with reason OOMKilled"
+        explanation: "Correct. The kernel ends the process, so the log has no message."
+      - id: b
+        text: "the Service type"
+        explanation: "Not correct. A Service does not restart pods."
+      - id: c
+        text: "the image tag"
+        explanation: "Not correct. The tag does not explain a restart."
+      - id: d
+        text: "the realm name"
+        explanation: "Not correct. The realm is unrelated."
+    correct_option: a
+    explanation: "Correct. The kernel ends the process, so the log has no message."

@@ -155,6 +155,49 @@ modules:
         pass_score: 70
 
       - type: reading
+        title: "Validate Tokens In A Resource Server"
+        path: sections/section-010/module-03/course.md
+      - type: reading
+        title: "Check The Signature With The Realm Keys"
+        path: sections/section-010/module-03/course-01-check-the-signature-with-the-realm-keys.md
+      - type: reading
+        title: "Claims A Resource Server Must Check"
+        path: sections/section-010/module-03/course-02-claims-a-resource-server-must-check.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-03/labs/lab-01/question.md
+      - type: lab
+        title: "Add The Audience inventory-api To The Tokens Of inventory-cli Lab"
+        path: sections/section-010/module-03/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: tokens
+        task_kind: build
+        tags: [oidc, access-token, jwt, token-endpoint, kcadm]
+        learning_goals:
+          - Add an audience mapper for inventory-api to the dedicated scope of inventory-cli
+          - Prove the aud claim in a fresh access token
+          - Prove with introspection that the token is active
+        resources:
+          - name: "Securing applications: OpenID Connect"
+            url: https://www.keycloak.org/securing-apps/oidc-layers
+          - name: "Server Administration Guide: audience support"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#_audience
+      - type: reading
+        title: "Token Introspection"
+        path: sections/section-010/module-03/course-03-token-introspection.md
+      - type: reading
+        title: "Logout And Token Lifetime"
+        path: sections/section-010/module-03/course-04-logout-and-token-lifetime.md
+      - type: reading
+        title: "Summary"
+        path: sections/section-010/module-03/course-05-summary.md
+      - type: quiz
+        title: "Knowledge Check: Validate Tokens In A Resource Server"
+        path: sections/section-010/module-03/quiz.yaml
+        pass_score: 70
+
+      - type: reading
         title: Question
         path: sections/section-010/capstone/labs/lab-01/question.md
       - type: lab
@@ -426,6 +469,51 @@ modules:
       - type: quiz
         title: "Knowledge Check: Secure Keycloak Traffic With TLS And A Reverse Proxy"
         path: sections/section-030/module-03/quiz.yaml
+        pass_score: 70
+
+      - type: reading
+        title: "Observe And Operate Keycloak"
+        path: sections/section-030/module-04/course.md
+      - type: reading
+        title: "Logging Levels And Formats"
+        path: sections/section-030/module-04/course-01-logging-levels-and-formats.md
+      - type: reading
+        title: "Metrics On The Management Port"
+        path: sections/section-030/module-04/course-02-metrics-on-the-management-port.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-04/labs/lab-01/question.md
+      - type: lab
+        title: "Expose Metrics, Use JSON Logs And Raise One Log Category Lab"
+        path: sections/section-030/module-04/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: server-configuration
+        task_kind: build
+        tags: [env-vars, health-endpoints, production-mode]
+        learning_goals:
+          - Turn on the metrics endpoint on the management port
+          - Switch the console log to JSON
+          - Raise one log category without raising the root level
+        resources:
+          - name: "Configuring logging"
+            url: https://www.keycloak.org/server/logging
+          - name: "Observability"
+            url: https://www.keycloak.org/observability/configuration-metrics
+          - name: "Health checks"
+            url: https://www.keycloak.org/observability/health
+      - type: reading
+        title: "Memory, Resources And Restarts"
+        path: sections/section-030/module-04/course-03-memory-resources-and-restarts.md
+      - type: reading
+        title: "Operating And Troubleshooting"
+        path: sections/section-030/module-04/course-04-operating-and-troubleshooting.md
+      - type: reading
+        title: "Summary"
+        path: sections/section-030/module-04/course-05-summary.md
+      - type: quiz
+        title: "Knowledge Check: Observe And Operate Keycloak"
+        path: sections/section-030/module-04/quiz.yaml
         pass_score: 70
 
       - type: reading

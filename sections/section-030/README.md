@@ -49,9 +49,19 @@ The playground holds the namespace `edge-demo` with Keycloak in development mode
 4. Troubleshooting TLS And Proxy Problems
 5. Summary
 
+### 4. Observe And Operate Keycloak
+
+The playground holds the namespace `ops-demo` with Keycloak 26.8.1 in development mode with health checks on, and a `tester` pod that has `curl` and `jq`.
+
+1. Logging Levels And Formats
+2. Metrics On The Management Port, followed by the lab **Expose Metrics, Use JSON Logs And Raise One Log Category**
+3. Memory, Resources And Restarts
+4. Operating And Troubleshooting
+5. Summary
+
 ## Section capstone: Run A Production Keycloak On PostgreSQL
 
-The capstone is one graded scenario that combines both modules. The namespace `runcapstone-demo` holds a Keycloak Deployment that someone copied from a laptop test. It runs in development mode, keeps its data in `dev-file`, never becomes ready, and does not load the realm the application needs. Several faults are independent, so fixing one does not reveal the next. Work it after the module labs.
+The capstone is one graded scenario that combines the modules. The namespace `runcapstone-demo` holds a Keycloak Deployment that someone copied from a laptop test. It runs in development mode, keeps its data in `dev-file`, never becomes ready, and does not load the realm the application needs. Several faults are independent, so fixing one does not reveal the next. Work it after the module labs.
 
 Start the capstone:
 

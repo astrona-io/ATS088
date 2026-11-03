@@ -1,0 +1,52 @@
+# Expose Metrics, Use JSON Logs And Raise One Log Category
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-088-lab-030-04"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1 and the tester pod, and waits until the administrator can sign in"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-088-lab-030-04-setup"
+      description: "Leaves Keycloak with health checks only: no metrics and text logs"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+validation:
+  scripts:
+    - name: "validate-metrics-endpoint"
+      description: "Confirms the management port serves /metrics with JVM metrics"
+      type: "file"
+      source: "validation/validate-metrics-endpoint.sh"
+    - name: "validate-json-logs"
+      description: "Confirms the running pod writes JSON log lines"
+      type: "file"
+      source: "validation/validate-json-logs.sh"
+    - name: "validate-log-level"
+      description: "Confirms the root log level is info and org.keycloak.events logs at debug"
+      type: "file"
+      source: "validation/validate-log-level.sh"
+teardown:
+  keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - nicolaka/netshoot:v0.13
+      - quay.io/keycloak/keycloak:26.8.1
