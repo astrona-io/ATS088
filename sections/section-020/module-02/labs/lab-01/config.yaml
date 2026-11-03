@@ -1,0 +1,52 @@
+# Give An Auditor Read-Only Access To Users
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-088-lab-020-02"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1 and the tester pod, and waits until the administrator can sign in"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-088-lab-020-02-setup"
+      description: "Creates the realm inventory with inventory-auditor, a service account client without administration roles"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+validation:
+  scripts:
+    - name: "validate-can-list-users"
+      description: "Confirms a token of inventory-auditor gets status 200 from the user list"
+      type: "file"
+      source: "validation/validate-can-list-users.sh"
+    - name: "validate-cannot-create-user"
+      description: "Confirms a token of inventory-auditor gets status 403 when it creates a user"
+      type: "file"
+      source: "validation/validate-cannot-create-user.sh"
+    - name: "validate-least-privilege"
+      description: "Confirms the service account holds view-users and neither manage-users nor realm-admin"
+      type: "file"
+      source: "validation/validate-least-privilege.sh"
+teardown:
+  keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - nicolaka/netshoot:v0.13
+      - quay.io/keycloak/keycloak:26.8.1

@@ -110,6 +110,51 @@ modules:
         path: sections/section-010/module-01/course-05-summary.md
 
       - type: reading
+        title: "Secure Browser Sign-In With The Authorization Code Flow"
+        path: sections/section-010/module-02/course.md
+      - type: reading
+        title: "The Authorization Code Flow Step By Step"
+        path: sections/section-010/module-02/course-01-the-authorization-code-flow-step-by-step.md
+      - type: reading
+        title: "PKCE And Exact Redirect URIs"
+        path: sections/section-010/module-02/course-02-pkce-and-exact-redirect-uris.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Secure A Single-Page Client With PKCE And Exact Redirect URIs Lab"
+        path: sections/section-010/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: protocols
+        task_kind: troubleshooting
+        tags: [oauth2, authorization-code, public-client, password-grant, kcadm]
+        learning_goals:
+          - Replace wildcard redirect URIs and web origins with exact values
+          - Require PKCE with the S256 method on a public client
+          - Turn off the password grant on a browser client and prove the setting with kcadm
+        resources:
+          - name: "Securing applications: OpenID Connect"
+            url: https://www.keycloak.org/securing-apps/oidc-layers
+          - name: "RFC 7636: PKCE"
+            url: https://datatracker.ietf.org/doc/html/rfc7636
+          - name: "Server Administration Guide: managing OpenID Connect clients"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc_clients
+      - type: reading
+        title: "Scopes, Client Scopes And Claims"
+        path: sections/section-010/module-02/course-03-scopes-client-scopes-and-claims.md
+      - type: reading
+        title: "Refresh Tokens, Token Lifespans And Sessions"
+        path: sections/section-010/module-02/course-04-refresh-tokens-lifespans-and-sessions.md
+      - type: reading
+        title: "Summary"
+        path: sections/section-010/module-02/course-05-summary.md
+      - type: quiz
+        title: "Knowledge Check: Secure Browser Sign-In With The Authorization Code Flow"
+        path: sections/section-010/module-02/quiz.yaml
+        pass_score: 70
+
+      - type: reading
         title: Question
         path: sections/section-010/capstone/labs/lab-01/question.md
       - type: lab
@@ -183,6 +228,49 @@ modules:
       - type: reading
         title: Summary
         path: sections/section-020/module-01/course-04-summary.md
+
+      - type: reading
+        title: "Administer Keycloak With The Consoles And The Admin REST API"
+        path: sections/section-020/module-02/course.md
+      - type: reading
+        title: "The Admin Console And The Account Console"
+        path: sections/section-020/module-02/course-01-the-admin-console-and-the-account-console.md
+      - type: reading
+        title: "The Admin REST API"
+        path: sections/section-020/module-02/course-02-the-admin-rest-api.md
+      - type: reading
+        title: "Administration Roles And Least Privilege"
+        path: sections/section-020/module-02/course-03-administration-roles-and-least-privilege.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Give An Auditor Read-Only Access To Users Lab"
+        path: sections/section-020/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: administration
+        task_kind: build
+        tags: [admin-rest-api, service-account, client-secret, confidential-client, kcadm]
+        learning_goals:
+          - Assign the view-users role of realm-management to a service account
+          - Prove with tokens that the account can list users and cannot create them
+          - Keep the service account free of manage-users and realm-admin
+        resources:
+          - name: "Server Administration Guide: the Admin REST API"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#admin-rest-api
+          - name: "Server Administration Guide: Admin CLI"
+            url: https://www.keycloak.org/docs/latest/server_admin/index.html#admin-cli
+      - type: reading
+        title: "User Events And Admin Events"
+        path: sections/section-020/module-02/course-04-user-events-and-admin-events.md
+      - type: reading
+        title: "Summary"
+        path: sections/section-020/module-02/course-05-summary.md
+      - type: quiz
+        title: "Knowledge Check: Administer Keycloak With The Consoles And The Admin REST API"
+        path: sections/section-020/module-02/quiz.yaml
+        pass_score: 70
 
       - type: reading
         title: Question
@@ -294,6 +382,51 @@ modules:
       - type: reading
         title: Summary
         path: sections/section-030/module-02/course-03-summary.md
+
+      - type: reading
+        title: "Secure Keycloak Traffic With TLS And A Reverse Proxy"
+        path: sections/section-030/module-03/course.md
+      - type: reading
+        title: "Where TLS Ends"
+        path: sections/section-030/module-03/course-01-where-tls-ends.md
+      - type: reading
+        title: "Server TLS Certificate Files"
+        path: sections/section-030/module-03/course-02-server-tls-certificate-files.md
+      - type: reading
+        title: "Reverse Proxy Headers"
+        path: sections/section-030/module-03/course-03-reverse-proxy-headers.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-03/labs/lab-01/question.md
+      - type: lab
+        title: "Serve Keycloak Over HTTPS Behind A Reverse Proxy Lab"
+        path: sections/section-030/module-03/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: server-configuration
+        task_kind: build
+        tags: [production-mode, hostname, http-enabled, env-vars, kubernetes-secret]
+        learning_goals:
+          - Mount a TLS Secret and set the HTTPS certificate and key options
+          - Trust forwarded headers from a reverse proxy with KC_PROXY_HEADERS
+          - Prove the HTTPS listener with a discovery document whose issuer uses the public host name
+        resources:
+          - name: "Configuring TLS"
+            url: https://www.keycloak.org/server/enabletls
+          - name: "Using a reverse proxy"
+            url: https://www.keycloak.org/server/reverseproxy
+          - name: "Configuring the hostname"
+            url: https://www.keycloak.org/server/hostname
+      - type: reading
+        title: "Troubleshooting TLS And Proxy Problems"
+        path: sections/section-030/module-03/course-04-troubleshooting-tls-and-proxy-problems.md
+      - type: reading
+        title: "Summary"
+        path: sections/section-030/module-03/course-05-summary.md
+      - type: quiz
+        title: "Knowledge Check: Secure Keycloak Traffic With TLS And A Reverse Proxy"
+        path: sections/section-030/module-03/quiz.yaml
+        pass_score: 70
 
       - type: reading
         title: Question

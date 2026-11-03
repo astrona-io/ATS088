@@ -27,9 +27,9 @@ looking at the solution, then finish the section with its capstone.
 
 | Section | Title | Modules | Labs | Topic |
 | --- | --- | --- | --- | --- |
-| [010](sections/section-010) | OAuth 2.0, OpenID Connect And SAML In Keycloak | 1 | 1 + capstone | Identity protocols |
-| [020](sections/section-020) | The Master Realm And Application Realms | 1 | 1 + capstone | Realms |
-| [030](sections/section-030) | Running Keycloak From The Container Image | 2 | 2 + capstone | Running Keycloak |
+| [010](sections/section-010) | OAuth 2.0, OpenID Connect And SAML In Keycloak | 2 | 2 + capstone | Identity protocols |
+| [020](sections/section-020) | The Master Realm And Application Realms | 2 | 2 + capstone | Realms |
+| [030](sections/section-030) | Running Keycloak From The Container Image | 3 | 3 + capstone | Running Keycloak |
 
 The order goes from the outside in. Section 010 starts with what an
 application gets from Keycloak: tokens, and the protocols that deliver them.
@@ -44,9 +44,12 @@ configuration, production mode and the database.
 | Module | Reader | Parts | Labs |
 | --- | --- | --- | --- |
 | 010-01 | [Get Tokens From Keycloak With OAuth 2.0 And OpenID Connect](sections/section-010/module-01/course.md) | 4 | [lab-01](sections/section-010/module-01/labs/lab-01) |
+| 010-02 | [Secure Browser Sign-In With The Authorization Code Flow](sections/section-010/module-02/course.md) | 4 | [lab-01](sections/section-010/module-02/labs/lab-01) |
 | 020-01 | [Separate Administration From Applications With Realms](sections/section-020/module-01/course.md) | 3 | [lab-01](sections/section-020/module-01/labs/lab-01) |
+| 020-02 | [Administer Keycloak With The Consoles And The Admin REST API](sections/section-020/module-02/course.md) | 4 | [lab-01](sections/section-020/module-02/labs/lab-01) |
 | 030-01 | [Run Keycloak From The Container Image In Production Mode](sections/section-030/module-01/course.md) | 3 | [lab-01](sections/section-030/module-01/labs/lab-01) |
 | 030-02 | [Store Keycloak Data In PostgreSQL And Import A Realm](sections/section-030/module-02/course.md) | 2 | [lab-01](sections/section-030/module-02/labs/lab-01) |
+| 030-03 | [Secure Keycloak Traffic With TLS And A Reverse Proxy](sections/section-030/module-03/course.md) | 4 | [lab-01](sections/section-030/module-03/labs/lab-01) |
 
 ---
 

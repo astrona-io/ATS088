@@ -1,0 +1,246 @@
+# Knowledge check for the module Sign Users In With The Authorization Code Flow And PKCE. Listed in astrona.yaml as a `type: quiz` entry after the module.
+schema_version: 1
+kind: question_bank
+id: ats088-010-m02
+course_id: ATS088
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: module
+  id: module-02
+  title: "Sign Users In With The Authorization Code Flow And PKCE"
+placement:
+  position: after
+  reading: sections/section-010/module-02/course-05-summary.md
+questions:
+  - id: ats088-010-m02-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe the channels of the authorization code flow"
+    source_readings:
+      - sections/section-010/module-02/course-01-the-authorization-code-flow-step-by-step.md
+    prompt: "Which part of the authorization code flow travels through the user's browser?"
+    options:
+      - id: a
+        text: "The signing key of the realm."
+        explanation: "Not correct. The signing key never leaves Keycloak."
+      - id: b
+        text: "The authorization code, in a redirect URL."
+        explanation: "Correct. The code is the only value in the front channel."
+      - id: c
+        text: "The access token and the refresh token."
+        explanation: "Not correct. Tokens are returned on the back channel, in the response to the token request."
+      - id: d
+        text: "The client secret."
+        explanation: "Not correct. A secret is never sent through the browser."
+    correct_option: b
+    explanation: "Correct. The code is the only value in the front channel."
+
+  - id: ats088-010-m02-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the authorization request parameters"
+    source_readings:
+      - sections/section-010/module-02/course-01-the-authorization-code-flow-step-by-step.md
+    prompt: "What is the job of the `state` parameter in an authorization request?"
+    options:
+      - id: a
+        text: "It lists the scopes Keycloak must grant."
+        explanation: "Not correct. Scopes are sent in `scope`."
+      - id: b
+        text: "It sets the lifetime of the code."
+        explanation: "Not correct. The code lifetime is a Keycloak setting."
+      - id: c
+        text: "The client checks that the returned value equals the one it sent, so the response belongs to its own request."
+        explanation: "Correct. Keycloak returns `state` unchanged so the client can match it."
+      - id: d
+        text: "It selects the grant type."
+        explanation: "Not correct. The grant type is chosen by `response_type` and `grant_type`."
+    correct_option: c
+    explanation: "Correct. Keycloak returns `state` unchanged so the client can match it."
+
+  - id: ats088-010-m02-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain the single use of a code"
+    source_readings:
+      - sections/section-010/module-02/course-01-the-authorization-code-flow-step-by-step.md
+    prompt: "What does Keycloak answer when a client posts the same authorization code to the token endpoint a second time?"
+    options:
+      - id: a
+        text: "A new access token with a longer lifespan."
+        explanation: "Not correct. No tokens are issued for a used code."
+      - id: b
+        text: "The same tokens as the first time."
+        explanation: "Not correct. A used code gives no tokens."
+      - id: c
+        text: "A redirect to the login page."
+        explanation: "Not correct. The token endpoint returns JSON, not a redirect."
+      - id: d
+        text: "An `invalid_grant` error."
+        explanation: "Correct. A code works once."
+    correct_option: d
+    explanation: "Correct. A code works once."
+
+  - id: ats088-010-m02-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what PKCE protects"
+    source_readings:
+      - sections/section-010/module-02/course-02-pkce-and-exact-redirect-uris.md
+    prompt: "Which value does the client send in the token request so Keycloak can check it against the challenge?"
+    options:
+      - id: a
+        text: "The code verifier."
+        explanation: "Correct. Keycloak hashes the verifier and compares the result with the stored challenge."
+      - id: b
+        text: "The code challenge."
+        explanation: "Not correct. The challenge was sent in the authorization request."
+      - id: c
+        text: "The state."
+        explanation: "Not correct. The state belongs to the authorization request."
+      - id: d
+        text: "The nonce."
+        explanation: "Not correct. The nonce is copied into the ID token."
+    correct_option: a
+    explanation: "Correct. Keycloak hashes the verifier and compares the result with the stored challenge."
+
+  - id: ats088-010-m02-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Require PKCE for a client"
+    source_readings:
+      - sections/section-010/module-02/course-02-pkce-and-exact-redirect-uris.md
+    prompt: "Which client attribute makes Keycloak require PKCE with the SHA-256 method?"
+    options:
+      - id: a
+        text: "publicClient set to true"
+        explanation: "Not correct. This setting makes the client public."
+      - id: b
+        text: "pkce.code.challenge.method set to S256"
+        explanation: "Correct. With this attribute set, a request without a valid challenge is refused."
+      - id: c
+        text: "pkce.required set to true"
+        explanation: "Not correct. There is no attribute with that name."
+      - id: d
+        text: "standardFlowEnabled set to true"
+        explanation: "Not correct. This setting turns the standard flow on."
+    correct_option: b
+    explanation: "Correct. With this attribute set, a request without a valid challenge is refused."
+
+  - id: ats088-010-m02-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain exact redirect URIs"
+    source_readings:
+      - sections/section-010/module-02/course-02-pkce-and-exact-redirect-uris.md
+    prompt: "Why must a client list the full callback URL as its redirect URI instead of `*`?"
+    options:
+      - id: a
+        text: "Keycloak cannot store a wildcard."
+        explanation: "Not correct. Keycloak accepts wildcards, which is why they are dangerous."
+      - id: b
+        text: "A wildcard turns off PKCE."
+        explanation: "Not correct. The two settings are independent."
+      - id: c
+        text: "A wildcard lets any address receive an authorization code."
+        explanation: "Correct. Keycloak sends the code to any address that matches the list."
+      - id: d
+        text: "A wildcard makes the token endpoint slower."
+        explanation: "Not correct. Speed is not the issue."
+    correct_option: c
+    explanation: "Correct. Keycloak sends the code to any address that matches the list."
+
+  - id: ats088-010-m02-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell default and optional client scopes apart"
+    source_readings:
+      - sections/section-010/module-02/course-03-scopes-client-scopes-and-claims.md
+    prompt: "When does Keycloak apply an optional client scope to a token?"
+    options:
+      - id: a
+        text: "Always, for every client in the realm."
+        explanation: "Not correct. That describes a default scope."
+      - id: b
+        text: "Only for confidential clients."
+        explanation: "Not correct. Scope type does not depend on client type."
+      - id: c
+        text: "Only when the user is an administrator."
+        explanation: "Not correct. Scopes do not depend on user roles."
+      - id: d
+        text: "Only when the client lists its name in the `scope` parameter."
+        explanation: "Correct. Default scopes always apply; optional scopes apply on request."
+    correct_option: d
+    explanation: "Correct. Default scopes always apply; optional scopes apply on request."
+
+  - id: ats088-010-m02-q08
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Add a claim with a protocol mapper"
+    source_readings:
+      - sections/section-010/module-02/course-03-scopes-client-scopes-and-claims.md
+    prompt: "A mapper sets only `id.token.claim` to true. Where does its claim appear?"
+    options:
+      - id: a
+        text: "In the ID token only."
+        explanation: "Correct. The three claim settings choose the tokens that receive the claim."
+      - id: b
+        text: "In the access token only."
+        explanation: "Not correct. The access token needs `access.token.claim`."
+      - id: c
+        text: "In the refresh token."
+        explanation: "Not correct. Refresh tokens are not controlled by these settings."
+      - id: d
+        text: "In every token."
+        explanation: "Not correct. Only the tokens whose setting is on receive it."
+    correct_option: a
+    explanation: "Correct. The three claim settings choose the tokens that receive the claim."
+
+  - id: ats088-010-m02-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell the token lifetimes apart"
+    source_readings:
+      - sections/section-010/module-02/course-04-refresh-tokens-lifespans-and-sessions.md
+    prompt: "Which setting controls how long one access token stays valid?"
+    options:
+      - id: a
+        text: "ssoSessionIdleTimeout."
+        explanation: "Not correct. That limits how long an SSO session can stay unused."
+      - id: b
+        text: "The realm attribute accessTokenLifespan."
+        explanation: "Correct. The default is 300 seconds."
+      - id: c
+        text: "ssoSessionMaxLifespan."
+        explanation: "Not correct. That limits the SSO session in total."
+      - id: d
+        text: "offlineSessionIdleTimeout."
+        explanation: "Not correct. That limits offline sessions."
+    correct_option: b
+    explanation: "Correct. The default is 300 seconds."
+
+  - id: ats088-010-m02-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain refresh token rotation"
+    source_readings:
+      - sections/section-010/module-02/course-04-refresh-tokens-lifespans-and-sessions.md
+    prompt: "A realm has `revokeRefreshToken` on. What happens when a client sends the same refresh token twice?"
+    options:
+      - id: a
+        text: "Keycloak deletes the user."
+        explanation: "Not correct. Users are not deleted."
+      - id: b
+        text: "Keycloak turns off the client."
+        explanation: "Not correct. Clients are not turned off."
+      - id: c
+        text: "The second request fails with `invalid_grant`."
+        explanation: "Correct. Each refresh returns a new refresh token and the old one stops working."
+      - id: d
+        text: "Both requests succeed."
+        explanation: "Not correct. That is the behaviour with rotation off."
+    correct_option: c
+    explanation: "Correct. Each refresh returns a new refresh token and the old one stops working."
+

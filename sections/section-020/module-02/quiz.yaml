@@ -1,0 +1,246 @@
+# Knowledge check for the module Administer Keycloak With The Consoles And The Admin REST API. Listed in astrona.yaml as a `type: quiz` entry after the module.
+schema_version: 1
+kind: question_bank
+id: ats088-020-m02
+course_id: ATS088
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: module
+  id: module-02
+  title: "Administer Keycloak With The Consoles And The Admin REST API"
+placement:
+  position: after
+  reading: sections/section-020/module-02/course-05-summary.md
+questions:
+  - id: ats088-020-m02-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Give the console addresses"
+    source_readings:
+      - sections/section-020/module-02/course-01-the-admin-console-and-the-account-console.md
+    prompt: "Which address opens the Account Console of the realm `inventory`?"
+    options:
+      - id: a
+        text: "/account/inventory/admin"
+        explanation: "Not correct. This path does not exist."
+      - id: b
+        text: "/realms/inventory/account"
+        explanation: "Correct. The Account Console of a realm is under /realms/<realm>/account."
+      - id: c
+        text: "/admin/inventory/account"
+        explanation: "Not correct. The Admin Console uses /admin/<realm>/console/."
+      - id: d
+        text: "/realms/master/console"
+        explanation: "Not correct. The master realm console is for administrators."
+    correct_option: b
+    explanation: "Correct. The Account Console of a realm is under /realms/<realm>/account."
+
+  - id: ats088-020-m02-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the clients behind the consoles"
+    source_readings:
+      - sections/section-020/module-02/course-01-the-admin-console-and-the-account-console.md
+    prompt: "Which client do command-line tools such as kcadm.sh use to sign in with a user name and password?"
+    options:
+      - id: a
+        text: "security-admin-console"
+        explanation: "Not correct. That client belongs to the Admin Console."
+      - id: b
+        text: "realm-management"
+        explanation: "Not correct. That client only holds administration roles."
+      - id: c
+        text: "admin-cli"
+        explanation: "Correct. admin-cli is a public client that allows the password grant."
+      - id: d
+        text: "account-console"
+        explanation: "Not correct. That client belongs to the Account Console."
+    correct_option: c
+    explanation: "Correct. admin-cli is a public client that allows the password grant."
+
+  - id: ats088-020-m02-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain the Admin Console and the API"
+    source_readings:
+      - sections/section-020/module-02/course-01-the-admin-console-and-the-account-console.md
+    prompt: "What does the Admin Console do when an administrator saves a setting?"
+    options:
+      - id: a
+        text: "It writes to the database directly."
+        explanation: "Not correct. The console is a browser application and has no database access."
+      - id: b
+        text: "It edits keycloak.conf."
+        explanation: "Not correct. The configuration file is not changed at run time."
+      - id: c
+        text: "It restarts the server."
+        explanation: "Not correct. Settings in a realm take effect without a restart."
+      - id: d
+        text: "It calls the Admin REST API."
+        explanation: "Correct. Every action in the console is a call to the Admin REST API."
+    correct_option: d
+    explanation: "Correct. Every action in the console is a call to the Admin REST API."
+
+  - id: ats088-020-m02-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell 401 and 403 apart"
+    source_readings:
+      - sections/section-020/module-02/course-02-the-admin-rest-api.md
+    prompt: "A call to the Admin REST API returns 403. What does it mean?"
+    options:
+      - id: a
+        text: "The token is valid, but the caller lacks the needed role."
+        explanation: "Correct. Keycloak knows the caller and refuses the action."
+      - id: b
+        text: "The token has expired."
+        explanation: "Not correct. An expired token returns 401."
+      - id: c
+        text: "The client secret is wrong."
+        explanation: "Not correct. A wrong secret fails at the token endpoint."
+      - id: d
+        text: "The realm does not exist."
+        explanation: "Not correct. A missing realm returns 404."
+    correct_option: a
+    explanation: "Correct. Keycloak knows the caller and refuses the action."
+
+  - id: ats088-020-m02-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use object ids in paths"
+    source_readings:
+      - sections/section-020/module-02/course-02-the-admin-rest-api.md
+    prompt: "How does a path in the Admin REST API name one user?"
+    options:
+      - id: a
+        text: "With the client id of the caller."
+        explanation: "Not correct. The caller's client is unrelated."
+      - id: b
+        text: "With the user's id, a UUID."
+        explanation: "Correct. Look the id up first, for example with the query username=alice&exact=true."
+      - id: c
+        text: "With the user name."
+        explanation: "Not correct. User names are used in queries, not in object paths."
+      - id: d
+        text: "With the email address."
+        explanation: "Not correct. Email addresses are not used in paths."
+    correct_option: b
+    explanation: "Correct. Look the id up first, for example with the query username=alice&exact=true."
+
+  - id: ats088-020-m02-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what realm-management holds"
+    source_readings:
+      - sections/section-020/module-02/course-03-administration-roles-and-least-privilege.md
+    prompt: "What does the client `realm-management` hold?"
+    options:
+      - id: a
+        text: "The signing keys of the realm."
+        explanation: "Not correct. Keys are realm settings."
+      - id: b
+        text: "The Admin Console pages."
+        explanation: "Not correct. The console is a different client."
+      - id: c
+        text: "The client roles that control the Admin REST API of the realm."
+        explanation: "Correct. Roles such as view-users and manage-users belong to it."
+      - id: d
+        text: "The users of the realm."
+        explanation: "Not correct. Users belong to the realm."
+    correct_option: c
+    explanation: "Correct. Roles such as view-users and manage-users belong to it."
+
+  - id: ats088-020-m02-q07
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Apply least privilege to a service account"
+    source_readings:
+      - sections/section-020/module-02/course-03-administration-roles-and-least-privilege.md
+    prompt: "A tool must only read users. Which assignment is correct?"
+    options:
+      - id: a
+        text: "Give its service account realm-admin."
+        explanation: "Not correct. realm-admin allows everything in the realm."
+      - id: b
+        text: "Give its service account manage-users."
+        explanation: "Not correct. manage-users also changes and deletes users."
+      - id: c
+        text: "Give the tool the master administrator password."
+        explanation: "Not correct. That gives the tool control of every realm."
+      - id: d
+        text: "Give its service account the client role view-users of realm-management."
+        explanation: "Correct. It allows reading users and nothing more."
+    correct_option: d
+    explanation: "Correct. It allows reading users and nothing more."
+
+  - id: ats088-020-m02-q08
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain when roles reach a token"
+    source_readings:
+      - sections/section-020/module-02/course-03-administration-roles-and-least-privilege.md
+    prompt: "You assign a role to a service account, but a call with an existing token still returns 403. Why?"
+    options:
+      - id: a
+        text: "Keycloak copies roles into a token when it issues it, so the tool needs a new token."
+        explanation: "Correct. An old token keeps the roles it had."
+      - id: b
+        text: "The role needs a server restart."
+        explanation: "Not correct. No restart is needed."
+      - id: c
+        text: "The role takes 24 hours to apply."
+        explanation: "Not correct. There is no delay."
+      - id: d
+        text: "The service account must be recreated."
+        explanation: "Not correct. The account does not need to be recreated."
+    correct_option: a
+    explanation: "Correct. An old token keeps the roles it had."
+
+  - id: ats088-020-m02-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Turn on the audit trail"
+    source_readings:
+      - sections/section-020/module-02/course-04-user-events-and-admin-events.md
+    prompt: "Which realm setting records changes made through the Admin REST API?"
+    options:
+      - id: a
+        text: "bruteForceProtected"
+        explanation: "Not correct. That setting concerns failed sign-ins."
+      - id: b
+        text: "adminEventsEnabled"
+        explanation: "Correct. Admin events record operations such as CREATE and UPDATE."
+      - id: c
+        text: "eventsEnabled"
+        explanation: "Not correct. eventsEnabled turns on user events."
+      - id: d
+        text: "revokeRefreshToken"
+        explanation: "Not correct. That setting concerns refresh tokens."
+    correct_option: b
+    explanation: "Correct. Admin events record operations such as CREATE and UPDATE."
+
+  - id: ats088-020-m02-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read user events"
+    source_readings:
+      - sections/section-020/module-02/course-04-user-events-and-admin-events.md
+    prompt: "Which role does a caller need to read events through the Admin REST API?"
+    options:
+      - id: a
+        text: "manage-clients"
+        explanation: "Not correct. That role changes clients."
+      - id: b
+        text: "view-realm"
+        explanation: "Not correct. That role reads realm settings."
+      - id: c
+        text: "view-events"
+        explanation: "Correct. view-events allows reading user events and admin events."
+      - id: d
+        text: "view-users"
+        explanation: "Not correct. That role reads users."
+    correct_option: c
+    explanation: "Correct. view-events allows reading user events and admin events."
+

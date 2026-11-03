@@ -1,0 +1,246 @@
+# Knowledge check for the module Secure Keycloak Traffic With TLS And A Reverse Proxy. Listed in astrona.yaml as a `type: quiz` entry after the module.
+schema_version: 1
+kind: question_bank
+id: ats088-030-m03
+course_id: ATS088
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: module
+  id: module-03
+  title: "Secure Keycloak Traffic With TLS And A Reverse Proxy"
+placement:
+  position: after
+  reading: sections/section-030/module-03/course-05-summary.md
+questions:
+  - id: ats088-030-m03-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Compare TLS layouts"
+    source_readings:
+      - sections/section-030/module-03/course-01-where-tls-ends.md
+    prompt: "Which layout lets Keycloak see the original client address in headers while the last hop is also encrypted?"
+    options:
+      - id: a
+        text: "A self-signed certificate in the browser."
+        explanation: "Not correct. A browser certificate does not change the layout."
+      - id: b
+        text: "Re-encryption: the proxy ends TLS, adds headers and opens a new TLS connection."
+        explanation: "Correct. The proxy can read and add headers, and it encrypts the last hop again."
+      - id: c
+        text: "Passthrough: the proxy forwards encrypted bytes."
+        explanation: "Not correct. A passthrough proxy cannot read or add HTTP headers."
+      - id: d
+        text: "Plain HTTP on port 8080 with no proxy."
+        explanation: "Not correct. That layout has no proxy and no encryption."
+    correct_option: b
+    explanation: "Correct. The proxy can read and add headers, and it encrypts the last hop again."
+
+  - id: ats088-030-m03-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "State what production mode requires"
+    source_readings:
+      - sections/section-030/module-03/course-01-where-tls-ends.md
+    prompt: "Which set of options lets `kc.sh start` run behind a proxy that ends TLS?"
+    options:
+      - id: a
+        text: "Only a database"
+        explanation: "Not correct. A database is unrelated to this check."
+      - id: b
+        text: "Only `health-enabled`"
+        explanation: "Not correct. Health endpoints do not satisfy it."
+      - id: c
+        text: "A hostname and `http-enabled` set to true"
+        explanation: "Correct. Production mode needs a hostname and either TLS or explicit HTTP."
+      - id: d
+        text: "Only `start-dev`"
+        explanation: "Not correct. start-dev is a different command."
+    correct_option: c
+    explanation: "Correct. Production mode needs a hostname and either TLS or explicit HTTP."
+
+  - id: ats088-030-m03-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the ports"
+    source_readings:
+      - sections/section-030/module-03/course-01-where-tls-ends.md
+    prompt: "Which port serves HTTPS in the module's Keycloak setup?"
+    options:
+      - id: a
+        text: "8080"
+        explanation: "Not correct. 8080 serves HTTP."
+      - id: b
+        text: "9000"
+        explanation: "Not correct. 9000 is the management interface."
+      - id: c
+        text: "5432"
+        explanation: "Not correct. 5432 is PostgreSQL."
+      - id: d
+        text: "8443"
+        explanation: "Correct. 8443 is the default HTTPS port of Keycloak."
+    correct_option: d
+    explanation: "Correct. 8443 is the default HTTPS port of Keycloak."
+
+  - id: ats088-030-m03-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the certificate options"
+    source_readings:
+      - sections/section-030/module-03/course-02-server-tls-certificate-files.md
+    prompt: "Which pair of environment variables points Keycloak at its certificate and key?"
+    options:
+      - id: a
+        text: "KC_HTTPS_CERTIFICATE_FILE and KC_HTTPS_CERTIFICATE_KEY_FILE"
+        explanation: "Correct. They map to https-certificate-file and https-certificate-key-file."
+      - id: b
+        text: "KC_TLS_CERT and KC_TLS_KEY"
+        explanation: "Not correct. These names are not Keycloak options."
+      - id: c
+        text: "KC_HOSTNAME and KC_HTTP_ENABLED"
+        explanation: "Not correct. These set the address and HTTP."
+      - id: d
+        text: "KC_PROXY_HEADERS and KC_HEALTH_ENABLED"
+        explanation: "Not correct. These set proxy trust and health."
+    correct_option: a
+    explanation: "Correct. They map to https-certificate-file and https-certificate-key-file."
+
+  - id: ats088-030-m03-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Store the key safely"
+    source_readings:
+      - sections/section-030/module-03/course-02-server-tls-certificate-files.md
+    prompt: "Where should the private key of the server certificate be stored in Kubernetes?"
+    options:
+      - id: a
+        text: "In a ConfigMap committed to Git"
+        explanation: "Not correct. A ConfigMap is for non-secret data."
+      - id: b
+        text: "In a Secret of type kubernetes.io/tls, mounted as files"
+        explanation: "Correct. The Secret is mounted read-only and the key never appears in the Deployment."
+      - id: c
+        text: "In an environment variable of the Deployment"
+        explanation: "Not correct. Anyone who can read the Deployment can read the key."
+      - id: d
+        text: "In the container image"
+        explanation: "Not correct. Every user of the image would hold the key."
+    correct_option: b
+    explanation: "Correct. The Secret is mounted read-only and the key never appears in the Deployment."
+
+  - id: ats088-030-m03-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Keep the probes working"
+    source_readings:
+      - sections/section-030/module-03/course-02-server-tls-certificate-files.md
+    prompt: "After a certificate is configured, the health probes fail with HTTP. Which setting fixes it?"
+    options:
+      - id: a
+        text: "KC_HOSTNAME_STRICT=true"
+        explanation: "Not correct. That does not change the management scheme."
+      - id: b
+        text: "KC_METRICS_ENABLED=false"
+        explanation: "Not correct. Metrics are unrelated to the probe scheme."
+      - id: c
+        text: "KC_HTTP_MANAGEMENT_SCHEME=http"
+        explanation: "Correct. The management interface inherits TLS by default; this keeps it on HTTP."
+      - id: d
+        text: "KC_HTTP_ENABLED=false"
+        explanation: "Not correct. That would turn off the HTTP listener."
+    correct_option: c
+    explanation: "Correct. The management interface inherits TLS by default; this keeps it on HTTP."
+
+  - id: ats088-030-m03-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain the SAN list"
+    source_readings:
+      - sections/section-030/module-03/course-02-server-tls-certificate-files.md
+    prompt: "A client connects to a host name that is not in the certificate's Subject Alternative Names. What happens?"
+    options:
+      - id: a
+        text: "The client accepts it."
+        explanation: "Not correct. Clients check the name."
+      - id: b
+        text: "Keycloak adds the name automatically."
+        explanation: "Not correct. Keycloak does not edit certificates."
+      - id: c
+        text: "The connection falls back to HTTP."
+        explanation: "Not correct. TLS does not fall back to HTTP."
+      - id: d
+        text: "The client rejects the certificate even if a trusted authority signed it."
+        explanation: "Correct. The host name must be in the SAN list."
+    correct_option: d
+    explanation: "Correct. The host name must be in the SAN list."
+
+  - id: ats088-030-m03-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain the default for proxy headers"
+    source_readings:
+      - sections/section-030/module-03/course-03-reverse-proxy-headers.md
+    prompt: "Keycloak runs without `KC_PROXY_HEADERS`. A request carries `X-Forwarded-Host`. What does Keycloak do with it?"
+    options:
+      - id: a
+        text: "It ignores the header."
+        explanation: "Correct. Without the option, Keycloak does not trust forwarding headers."
+      - id: b
+        text: "It uses it for the issuer."
+        explanation: "Not correct. That happens only when proxy headers are enabled and no fixed hostname exists."
+      - id: c
+        text: "It rejects the request."
+        explanation: "Not correct. The request is served."
+      - id: d
+        text: "It stores it as a user attribute."
+        explanation: "Not correct. Headers are not stored as attributes."
+    correct_option: a
+    explanation: "Correct. Without the option, Keycloak does not trust forwarding headers."
+
+  - id: ats088-030-m03-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain the fixed hostname"
+    source_readings:
+      - sections/section-030/module-03/course-03-reverse-proxy-headers.md
+    prompt: "A server has `KC_HOSTNAME=https://id.example.test` and `KC_PROXY_HEADERS=xforwarded`. A request sends `X-Forwarded-Host: other.example.test`. Which issuer does the discovery document show?"
+    options:
+      - id: a
+        text: "No issuer"
+        explanation: "Not correct. The document always has an issuer."
+      - id: b
+        text: "https://id.example.test/realms/master"
+        explanation: "Correct. The fixed URL decides the issuer."
+      - id: c
+        text: "https://other.example.test/realms/master"
+        explanation: "Not correct. A fixed hostname wins over the header."
+      - id: d
+        text: "http://keycloak:8080/realms/master"
+        explanation: "Not correct. That is the address of the request, not the fixed URL."
+    correct_option: b
+    explanation: "Correct. The fixed URL decides the issuer."
+
+  - id: ats088-030-m03-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Diagnose a failing start"
+    source_readings:
+      - sections/section-030/module-03/course-04-troubleshooting-tls-and-proxy-problems.md
+    prompt: "A pod restarts after you mounted the Secret and its log names a certificate path. What do you compare first?"
+    options:
+      - id: a
+        text: "The user password with the policy"
+        explanation: "Not correct. Users are not involved in the start."
+      - id: b
+        text: "The Service port with the node port"
+        explanation: "Not correct. The Service does not affect the start of the pod."
+      - id: c
+        text: "The option paths with the volume mount path and the Secret key names"
+        explanation: "Correct. A path that differs by one directory is the most common cause."
+      - id: d
+        text: "The realm name with the client id"
+        explanation: "Not correct. Those do not affect the certificate load."
+    correct_option: c
+    explanation: "Correct. A path that differs by one directory is the most common cause."
+

@@ -16,6 +16,7 @@ This section teaches you to run the image on purpose. You look inside the image,
 - The health endpoints on the management port `9000`, and how Kubernetes probes use them.
 - Why `dev-file` loses data, and how to point Keycloak at PostgreSQL with the password read from a Kubernetes Secret.
 - Importing a realm at start with `--import-realm`, what happens when the realm already exists, and exporting a realm with `kc.sh export`.
+- Where TLS ends, how to mount a certificate and key from a Secret, and what `KC_PROXY_HEADERS` and a fixed `KC_HOSTNAME` change.
 
 ## The learning path
 
@@ -37,6 +38,16 @@ The module starts at its landing page, which also launches the playground. The p
 1. From dev-file To PostgreSQL
 2. Importing And Exporting A Realm, followed by the lab **Move Keycloak To PostgreSQL With An Imported Realm**
 3. Summary
+
+### 3. Secure Keycloak Traffic With TLS And A Reverse Proxy
+
+The playground holds the namespace `edge-demo` with Keycloak in development mode on plain HTTP and a `tester` pod that has `curl`, `jq` and `openssl`. You create the certificate yourself.
+
+1. Where TLS Ends
+2. Server TLS Certificate Files
+3. Reverse Proxy Headers, followed by the lab **Serve Keycloak Over HTTPS Behind A Reverse Proxy**
+4. Troubleshooting TLS And Proxy Problems
+5. Summary
 
 ## Section capstone: Run A Production Keycloak On PostgreSQL
 

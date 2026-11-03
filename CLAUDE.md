@@ -304,7 +304,7 @@ Inside Keycloak, every module uses the same names:
 | user `alice` | A user in `inventory`, password `alice-password`, with email, first name and last name set, so the user profile is complete |
 | client `inventory-cli` | Public client with **Direct access grants** on, used to request tokens for `alice` with the password grant |
 | client `inventory-reporter` | Confidential client with **Service accounts** on, used for the client credentials grant |
-| client `inventory-web` | Confidential client with the standard flow (authorization code), used where a browser application is needed |
+| client `inventory-web` | Public client with the standard flow (authorization code) and PKCE, used where a browser application is needed |
 
 The password grant (`grant_type=password`, "Direct access grants" in the
 console) is used **only** so a grader and the reader can get a token for a

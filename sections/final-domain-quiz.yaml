@@ -220,3 +220,141 @@ questions:
         explanation: "Not correct. It starts and skips the realm."
     correct_option: a
     explanation: "Correct. A startup import creates a missing realm. It is not a sync."
+
+  - id: ats088-final-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain exact redirect URIs"
+    source_readings:
+      - sections/section-010/module-02/course-02-pkce-and-exact-redirect-uris.md
+    prompt: "Why must a client list the full callback URL as its redirect URI instead of `*`?"
+    options:
+      - id: a
+        text: "Keycloak cannot store a wildcard."
+        explanation: "Not correct. Keycloak accepts wildcards, which is why they are dangerous."
+      - id: b
+        text: "A wildcard turns off PKCE."
+        explanation: "Not correct. The two settings are independent."
+      - id: c
+        text: "A wildcard lets any address receive an authorization code."
+        explanation: "Correct. Keycloak sends the code to any address that matches the list."
+      - id: d
+        text: "A wildcard makes the token endpoint slower."
+        explanation: "Not correct. Speed is not the issue."
+    correct_option: c
+    explanation: "Correct. Keycloak sends the code to any address that matches the list."
+
+  - id: ats088-final-q11
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain refresh token rotation"
+    source_readings:
+      - sections/section-010/module-02/course-04-refresh-tokens-lifespans-and-sessions.md
+    prompt: "A realm has `revokeRefreshToken` on. What happens when a client sends the same refresh token twice?"
+    options:
+      - id: a
+        text: "Keycloak deletes the user."
+        explanation: "Not correct. Users are not deleted."
+      - id: b
+        text: "Keycloak turns off the client."
+        explanation: "Not correct. Clients are not turned off."
+      - id: c
+        text: "The second request fails with `invalid_grant`."
+        explanation: "Correct. Each refresh returns a new refresh token and the old one stops working."
+      - id: d
+        text: "Both requests succeed."
+        explanation: "Not correct. That is the behaviour with rotation off."
+    correct_option: c
+    explanation: "Correct. Each refresh returns a new refresh token and the old one stops working."
+
+  - id: ats088-final-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what realm-management holds"
+    source_readings:
+      - sections/section-020/module-02/course-03-administration-roles-and-least-privilege.md
+    prompt: "What does the client `realm-management` hold?"
+    options:
+      - id: a
+        text: "The signing keys of the realm."
+        explanation: "Not correct. Keys are realm settings."
+      - id: b
+        text: "The Admin Console pages."
+        explanation: "Not correct. The console is a different client."
+      - id: c
+        text: "The client roles that control the Admin REST API of the realm."
+        explanation: "Correct. Roles such as view-users and manage-users belong to it."
+      - id: d
+        text: "The users of the realm."
+        explanation: "Not correct. Users belong to the realm."
+    correct_option: c
+    explanation: "Correct. Roles such as view-users and manage-users belong to it."
+
+  - id: ats088-final-q13
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Apply least privilege to a service account"
+    source_readings:
+      - sections/section-020/module-02/course-03-administration-roles-and-least-privilege.md
+    prompt: "A tool must only read users. Which assignment is correct?"
+    options:
+      - id: a
+        text: "Give its service account realm-admin."
+        explanation: "Not correct. realm-admin allows everything in the realm."
+      - id: b
+        text: "Give its service account manage-users."
+        explanation: "Not correct. manage-users also changes and deletes users."
+      - id: c
+        text: "Give the tool the master administrator password."
+        explanation: "Not correct. That gives the tool control of every realm."
+      - id: d
+        text: "Give its service account the client role view-users of realm-management."
+        explanation: "Correct. It allows reading users and nothing more."
+    correct_option: d
+    explanation: "Correct. It allows reading users and nothing more."
+
+  - id: ats088-final-q14
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain the fixed hostname"
+    source_readings:
+      - sections/section-030/module-03/course-03-reverse-proxy-headers.md
+    prompt: "A server has `KC_HOSTNAME=https://id.example.test` and `KC_PROXY_HEADERS=xforwarded`. A request sends `X-Forwarded-Host: other.example.test`. Which issuer does the discovery document show?"
+    options:
+      - id: a
+        text: "No issuer"
+        explanation: "Not correct. The document always has an issuer."
+      - id: b
+        text: "https://id.example.test/realms/master"
+        explanation: "Correct. The fixed URL decides the issuer."
+      - id: c
+        text: "https://other.example.test/realms/master"
+        explanation: "Not correct. A fixed hostname wins over the header."
+      - id: d
+        text: "http://keycloak:8080/realms/master"
+        explanation: "Not correct. That is the address of the request, not the fixed URL."
+    correct_option: b
+    explanation: "Correct. The fixed URL decides the issuer."
+
+  - id: ats088-final-q15
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Diagnose a failing start"
+    source_readings:
+      - sections/section-030/module-03/course-04-troubleshooting-tls-and-proxy-problems.md
+    prompt: "A pod restarts after you mounted the Secret and its log names a certificate path. What do you compare first?"
+    options:
+      - id: a
+        text: "The user password with the policy"
+        explanation: "Not correct. Users are not involved in the start."
+      - id: b
+        text: "The Service port with the node port"
+        explanation: "Not correct. The Service does not affect the start of the pod."
+      - id: c
+        text: "The option paths with the volume mount path and the Secret key names"
+        explanation: "Correct. A path that differs by one directory is the most common cause."
+      - id: d
+        text: "The realm name with the client id"
+        explanation: "Not correct. Those do not affect the certificate load."
+    correct_option: c
+    explanation: "Correct. A path that differs by one directory is the most common cause."

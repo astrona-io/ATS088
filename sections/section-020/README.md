@@ -13,10 +13,14 @@ This section explains why you should not. The `master` realm is for administrati
 - What a realm holds: users and their credentials, clients, roles, groups, realm settings and signing keys.
 - The URLs every realm publishes, and why the issuer of a token names exactly one realm.
 - Signing `kcadm.sh` in to the `master` realm and using it to create, read, update and delete realms, users and clients.
+- The Admin Console, the Account Console and the Admin REST API, and the clients behind them.
+- Calling the Admin REST API with a token, and telling HTTP `401` from `403`.
+- The `realm-management` roles, and giving a service account only the role it needs.
+- User events and admin events, and how to read them.
 
 ## The learning path
 
-Work through the module in order. It has a landing page, three short parts, a graded lab right after the part it tests, and a summary. The module also has its own playground, a cluster where you can explore freely, and the landing page starts it for you.
+Work through the modules in order. Each module has a landing page, short parts, a graded lab right after the part it tests, and a summary. Each module also has its own playground, a cluster where you can explore freely, and the landing page starts it for you.
 
 ### 1. Separate Administration From Applications With Realms
 
@@ -26,6 +30,16 @@ The module starts at its landing page, which also launches the playground. The p
 2. What A Realm Holds, And Its URLs
 3. Managing Realms With kcadm.sh, followed by the lab **Create An Application Realm With kcadm.sh**
 4. Summary
+
+### 2. Administer Keycloak With The Consoles And The Admin REST API
+
+The playground holds the namespace `adminapi-demo` with Keycloak, a `tester` pod, the realm `inventory`, the user `alice`, the public client `inventory-cli` and the confidential client `inventory-auditor` with a service account.
+
+1. The Admin Console And The Account Console
+2. The Admin REST API
+3. Administration Roles And Least Privilege, followed by the lab **Give An Auditor Read-Only Access To Users**
+4. User Events And Admin Events
+5. Summary
 
 ## Section capstone: Move An Application Out Of The Master Realm
 

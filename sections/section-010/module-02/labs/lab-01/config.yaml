@@ -1,0 +1,52 @@
+# Secure A Single-Page Client With PKCE And Exact Redirect URIs
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-088-lab-010-02"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+bootstrap:
+  init:
+    - name: "deploy-keycloak"
+      description: "Deploys Keycloak 26.8.1 and the tester pod, and waits until the administrator can sign in"
+      type: "file"
+      source: "bootstrap/01-deploy-keycloak.sh"
+    - name: "ats-088-lab-010-02-setup"
+      description: "Creates the realm inventory with inventory-web registered with wildcards, no PKCE and direct access grants on"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+testing:
+  init:
+    - name: "wait-for-keycloak"
+      description: "Waits until kcadm.sh can sign in before the reference solution runs"
+      type: "file"
+      source: "testing/wait-for-keycloak.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+validation:
+  scripts:
+    - name: "validate-exact-redirects"
+      description: "Confirms the redirect URI and web origin of inventory-web are exact, with no wildcard"
+      type: "file"
+      source: "validation/validate-exact-redirects.sh"
+    - name: "validate-pkce-s256"
+      description: "Confirms inventory-web requires PKCE with S256 and keeps the standard flow"
+      type: "file"
+      source: "validation/validate-pkce-s256.sh"
+    - name: "validate-no-password-grant"
+      description: "Confirms direct access grants are off and inventory-web is still a public client"
+      type: "file"
+      source: "validation/validate-no-password-grant.sh"
+teardown:
+  keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - nicolaka/netshoot:v0.13
+      - quay.io/keycloak/keycloak:26.8.1

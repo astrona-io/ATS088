@@ -16,10 +16,13 @@ The section starts with Keycloak's place in the Cloud Native Computing Foundatio
 - What OpenID Connect adds to OAuth 2.0: the ID token, the `openid` scope, the UserInfo endpoint and the discovery document.
 - What the issuer (`iss`) claim says, and why it must match what the client expects.
 - SAML 2.0 assertions and metadata, and how to choose between SAML and OpenID Connect.
+- The authorization code flow, PKCE with `S256`, exact redirect URIs and web origins.
+- Scopes, client scopes and protocol mappers, and how they decide the claims in a token.
+- Access token lifespans, SSO sessions, refresh token rotation and the `offline_access` scope.
 
 ## The learning path
 
-Work through the module in order. It has a landing page, a few short parts, a graded lab right after the part it tests, and a summary. The module also has its own playground, a cluster where you can explore freely, and the landing page starts it for you.
+Work through the modules in order. Each module has a landing page, a few short parts, a graded lab right after the part it tests, and a summary. Each module also has its own playground, a cluster where you can explore freely, and the landing page starts it for you.
 
 ### 1. Get Tokens From Keycloak With OAuth 2.0 And OpenID Connect
 
@@ -31,9 +34,19 @@ The module starts at its landing page, which also launches the playground. The p
 4. SAML 2.0 And Choosing A Protocol
 5. Summary
 
+### 2. Secure Browser Sign-In With The Authorization Code Flow
+
+The playground holds the namespace `authcode-demo` with Keycloak, a `tester` pod, the realm `inventory` with the user `alice`, the public client `inventory-web` that requires PKCE, and the client `inventory-cli`.
+
+1. The Authorization Code Flow Step By Step
+2. PKCE And Exact Redirect URIs, followed by the lab **Secure A Single-Page Client With PKCE And Exact Redirect URIs**
+3. Scopes, Client Scopes And Claims
+4. Refresh Tokens, Token Lifespans And Sessions
+5. Summary
+
 ## Section capstone: Make A User Sign-In Work End To End
 
-The capstone is one graded scenario that combines the whole module. In the namespace `protocolscapstone-demo`, the user `alice` cannot get any token from the realm `inventory`. The token endpoint refuses each request, and there is more than one reason. You find each fault from the error Keycloak returns, fix the client and the user without recreating them, and prove the fix with an ID token. Work it after the module lab.
+The capstone is one graded scenario that combines the section's modules. In the namespace `protocolscapstone-demo`, the user `alice` cannot get any token from the realm `inventory`. The token endpoint refuses each request, and there is more than one reason. You find each fault from the error Keycloak returns, fix the client and the user without recreating them, and prove the fix with an ID token. Work it after the module lab.
 
 Start the capstone:
 
