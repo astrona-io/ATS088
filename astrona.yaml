@@ -131,6 +131,10 @@ modules:
             url: https://www.keycloak.org/securing-apps/oidc-layers
           - name: "OpenID Connect Core 1.0: ID Token"
             url: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
+      - type: quiz
+        title: "Knowledge Check: OAuth 2.0, OpenID Connect And SAML In Keycloak"
+        path: sections/section-010/quiz.yaml
+        pass_score: 70
 
   - id: module-020
     title: "The Master Realm And Application Realms"
@@ -200,6 +204,10 @@ modules:
             url: https://www.keycloak.org/docs/latest/server_admin/index.html#the-master-realm
           - name: "Server Administration Guide: Admin CLI"
             url: https://www.keycloak.org/docs/latest/server_admin/index.html#admin-cli
+      - type: quiz
+        title: "Knowledge Check: The Master Realm And Application Realms"
+        path: sections/section-020/quiz.yaml
+        pass_score: 70
 
   - id: module-030
     title: "Running Keycloak From The Container Image"
@@ -309,3 +317,11 @@ modules:
             url: https://www.keycloak.org/server/db
           - name: "Configuring the hostname"
             url: https://www.keycloak.org/server/hostname
+      - type: quiz
+        title: "Knowledge Check: Running Keycloak From The Container Image"
+        path: sections/section-030/quiz.yaml
+        pass_score: 70
+      - type: quiz
+        title: "Final Domain Quiz"
+        path: sections/final-domain-quiz.yaml
+        pass_score: 70

@@ -1,0 +1,245 @@
+# Knowledge check for section 020. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats088-020
+course_id: ATS088
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-020
+  title: "The Master Realm And Application Realms"
+placement:
+  position: after
+  reading: sections/section-020/capstone/labs/lab-01/question.md
+questions:
+  - id: ats088-020-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain how the bootstrap administrator is created"
+    source_readings:
+      - sections/section-020/module-01/course-01-the-master-realm-and-the-bootstrap-admin.md
+    prompt: "How does Keycloak get its first administrator in a Kubernetes pod?"
+    options:
+      - id: a
+        text: "From the environment variables `KC_BOOTSTRAP_ADMIN_USERNAME` and `KC_BOOTSTRAP_ADMIN_PASSWORD`, which it reads at its first start."
+        explanation: "Correct. A container has no local connection, so the variables are used."
+      - id: b
+        text: "It asks for the user name and password on the first sign-in to `/admin`."
+        explanation: "Not correct. Nobody can sign in before an administrator exists."
+      - id: c
+        text: "It reads them from the file `conf/keycloak.conf` at every start."
+        explanation: "Not correct. The course uses the two environment variables, and they matter only on the first start."
+      - id: d
+        text: "It copies the Kubernetes administrator of the cluster."
+        explanation: "Not correct. Keycloak users are not Kubernetes users."
+    correct_option: a
+    explanation: "Correct. A container has no local connection, so the variables are used."
+
+  - id: ats088-020-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know when the bootstrap variables take effect"
+    source_readings:
+      - sections/section-020/module-01/course-01-the-master-realm-and-the-bootstrap-admin.md
+    prompt: "You change the Secret `keycloak-admin` and restart the pod. The database already holds the realm `master`. What happens to the administrator password?"
+    options:
+      - id: a
+        text: "Keycloak sets the new password at the restart."
+        explanation: "Not correct. An existing administrator is not changed."
+      - id: b
+        text: "It stays the same. Keycloak logs an error and starts anyway."
+        explanation: "Correct. The variables only matter when `master` does not exist yet."
+      - id: c
+        text: "Keycloak refuses to start until the old password is removed."
+        explanation: "Not correct. It starts, and it logs an error."
+      - id: d
+        text: "Keycloak creates a second administrator with the new password."
+        explanation: "Not correct. No second user is created."
+    correct_option: b
+    explanation: "Correct. The variables only matter when `master` does not exist yet."
+
+  - id: ats088-020-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Give the reasons to keep applications out of master"
+    source_readings:
+      - sections/section-020/module-01/course-01-the-master-realm-and-the-bootstrap-admin.md
+    prompt: "Which statement is a reason to keep an application out of the `master` realm?"
+    options:
+      - id: a
+        text: "The `master` realm cannot issue tokens to clients."
+        explanation: "Not correct. It issues tokens, as the `admin-cli` example shows."
+      - id: b
+        text: "The `master` realm does not support the password grant."
+        explanation: "Not correct. `admin-cli` uses the password grant in `master`."
+      - id: c
+        text: "The administrators of `master` can manage every realm, so a wrong role mapping there can give a user control of the whole server."
+        explanation: "Correct. In an application realm the same mistake stays inside that realm."
+      - id: d
+        text: "The `master` realm can only hold one client."
+        explanation: "Not correct. It holds several built-in clients, and you can add more."
+    correct_option: c
+    explanation: "Correct. In an application realm the same mistake stays inside that realm."
+
+  - id: ats088-020-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the issuer of a master token"
+    source_readings:
+      - sections/section-020/module-01/course-01-the-master-realm-and-the-bootstrap-admin.md
+    prompt: "A token from the `admin-cli` client has the issuer `http://keycloak:8080/realms/master`. What does an API that trusts this issuer accept?"
+    options:
+      - id: a
+        text: "Only tokens for the user `admin`."
+        explanation: "Not correct. The issuer names the realm, not one user."
+      - id: b
+        text: "Tokens from every realm on the server."
+        explanation: "Not correct. An API trusts one issuer and its keys."
+      - id: c
+        text: "No tokens, because `admin-cli` is a public client."
+        explanation: "Not correct. Public clients get tokens too."
+      - id: d
+        text: "Tokens for every user of `master`, which is the administration realm."
+        explanation: "Correct. The realm name sits in the issuer."
+    correct_option: d
+    explanation: "Correct. The realm name sits in the issuer."
+
+  - id: ats088-020-q05
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know what a new realm contains"
+    source_readings:
+      - sections/section-020/module-01/course-02-what-a-realm-holds.md
+    prompt: "You create the realm `demo` and open **Clients**. What do you see?"
+    options:
+      - id: a
+        text: "An empty list."
+        explanation: "Not correct. Keycloak creates built-in clients when it creates the realm."
+      - id: b
+        text: "A copy of every client in `master`."
+        explanation: "Not correct. Clients belong to one realm and are not copied."
+      - id: c
+        text: "Built-in clients such as `account`, `account-console`, `admin-cli` and `security-admin-console`."
+        explanation: "Correct. A new realm is not empty. It also has signing keys."
+      - id: d
+        text: "Only the client `inventory-cli`."
+        explanation: "Not correct. That client exists only if you create it."
+    correct_option: c
+    explanation: "Correct. A new realm is not empty. It also has signing keys."
+
+  - id: ats088-020-q06
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Build the URLs of a realm"
+    source_readings:
+      - sections/section-020/module-01/course-02-what-a-realm-holds.md
+    prompt: "Which URL is the token endpoint of the realm `demo`?"
+    options:
+      - id: a
+        text: "`/realms/demo/protocol/openid-connect/token`"
+        explanation: "Correct. All endpoints sit under `/realms/<realm>`."
+      - id: b
+        text: "`/realms/demo/.well-known/openid-configuration`"
+        explanation: "Not correct. That is the discovery document."
+      - id: c
+        text: "`/realms/demo/protocol/openid-connect/certs`"
+        explanation: "Not correct. That lists the public signing keys."
+      - id: d
+        text: "`/admin/demo/console/`"
+        explanation: "Not correct. The Admin Console always signs in through `master`: `/admin/master/console/`."
+    correct_option: a
+    explanation: "Correct. All endpoints sit under `/realms/<realm>`."
+
+  - id: ats088-020-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why realms are isolated"
+    source_readings:
+      - sections/section-020/module-01/course-02-what-a-realm-holds.md
+    prompt: "Why can a token signed by the realm `demo` not pass a signature check against the keys of `master`?"
+    options:
+      - id: a
+        text: "Both realms share one key, but `demo` signs with a different algorithm."
+        explanation: "Not correct. Realms do not share keys."
+      - id: b
+        text: "The realm `demo` does not sign its tokens."
+        explanation: "Not correct. Every realm signs its tokens."
+      - id: c
+        text: "Tokens from other realms expire at once."
+        explanation: "Not correct. Expiry is the `exp` claim and is not tied to the realm of the checker."
+      - id: d
+        text: "Each realm signs with its own key pairs, so the `kid` values differ."
+        explanation: "Correct. An API that trusts one issuer rejects tokens from every other realm."
+    correct_option: d
+    explanation: "Correct. An API that trusts one issuer rejects tokens from every other realm."
+
+  - id: ats088-020-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Avoid renaming a realm in use"
+    source_readings:
+      - sections/section-020/module-01/course-02-what-a-realm-holds.md
+    prompt: "Why is renaming a realm that applications already use a problem?"
+    options:
+      - id: a
+        text: "Keycloak deletes all users of the realm at a rename."
+        explanation: "Not correct. The users stay. The URLs change."
+      - id: b
+        text: "The realm name is part of the issuer and of every endpoint URL, so clients and APIs that use the realm break."
+        explanation: "Correct. Only the display name can change safely."
+      - id: c
+        text: "The signing keys of the realm are deleted at a rename."
+        explanation: "Not correct. The problem is the URLs and the issuer."
+      - id: d
+        text: "A realm cannot be renamed in the Admin Console, only in `kcadm.sh`."
+        explanation: "Not correct. The problem is not the tool. It is what the name is used for."
+    correct_option: b
+    explanation: "Correct. Only the display name can change safely."
+
+  - id: ats088-020-q09
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain what kcadm.sh does"
+    source_readings:
+      - sections/section-020/module-01/course-03-managing-realms-with-kcadm.md
+    prompt: "What does every `kcadm.sh` command do?"
+    options:
+      - id: a
+        text: "It calls the Admin REST API, the same API the Admin Console uses."
+        explanation: "Correct. Anything you can click in the console, `kcadm.sh` can do."
+      - id: b
+        text: "It changes the options of the server process, such as the hostname."
+        explanation: "Not correct. The server options belong to `kc.sh`."
+      - id: c
+        text: "It edits the file `keycloak.conf` in the image."
+        explanation: "Not correct. It sends requests to a running server."
+      - id: d
+        text: "It opens a database connection and edits tables directly."
+        explanation: "Not correct. It uses the Admin REST API."
+    correct_option: a
+    explanation: "Correct. Anything you can click in the console, `kcadm.sh` can do."
+
+  - id: ats088-020-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Target the right realm with kcadm.sh"
+    source_readings:
+      - sections/section-020/module-01/course-03-managing-realms-with-kcadm.md
+    prompt: "You sign in to `master` and run `kcadm create users -s username=alice` without `-r`. Where does the user land?"
+    options:
+      - id: a
+        text: "In the realm `inventory`, the last realm you created."
+        explanation: "Not correct. `kcadm.sh` does not remember the last realm you created."
+      - id: b
+        text: "In no realm. The command fails."
+        explanation: "Not correct. It works, and the user lands in the administration realm."
+      - id: c
+        text: "In the `master` realm, the realm you signed in to."
+        explanation: "Correct. Add `-r <realm>` to work on another realm."
+      - id: d
+        text: "In every realm on the server."
+        explanation: "Not correct. A user belongs to one realm."
+    correct_option: c
+    explanation: "Correct. Add `-r <realm>` to work on another realm."

@@ -1,0 +1,245 @@
+# Knowledge check for section 030. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats088-030
+course_id: ATS088
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-030
+  title: "Running Keycloak From The Container Image"
+placement:
+  position: after
+  reading: sections/section-030/capstone/labs/lab-01/question.md
+questions:
+  - id: ats088-030-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Set container arguments correctly"
+    source_readings:
+      - sections/section-030/module-01/course-01-inside-the-container-image.md
+    prompt: "The entrypoint of the image is `/opt/keycloak/bin/kc.sh`. Where do you put `start` in a Kubernetes Deployment?"
+    options:
+      - id: a
+        text: "In `args` of the container."
+        explanation: "Correct. The `args` are the arguments of `kc.sh`."
+      - id: b
+        text: "In `command`."
+        explanation: "Not correct. `command` replaces the entrypoint, and the container fails to start."
+      - id: c
+        text: "In the `image` field."
+        explanation: "Not correct. The image field holds the image name and tag."
+      - id: d
+        text: "In a ConfigMap mounted at `/opt/keycloak/bin`."
+        explanation: "Not correct. A mounted file does not pass an argument to `kc.sh`."
+    correct_option: a
+    explanation: "Correct. The `args` are the arguments of `kc.sh`."
+
+  - id: ats088-030-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know which configuration source wins"
+    source_readings:
+      - sections/section-030/module-01/course-02-configuration-sources-and-build-options.md
+    prompt: "`KC_DB_URL_HOST=postgres-a` is set in `env` and `--db-url-host=postgres-b` is set in `args`. Which host does Keycloak use?"
+    options:
+      - id: a
+        text: "`postgres-a`, because environment variables win over command-line options."
+        explanation: "Not correct. The order is command line, environment variable, `keycloak.conf`, key store."
+      - id: b
+        text: "`postgres-b`, because a command-line option wins over an environment variable."
+        explanation: "Correct. If a change in `env` does nothing, look in `args` first."
+      - id: c
+        text: "Keycloak fails to start because the two values differ."
+        explanation: "Not correct. It uses the winner and does not report the other one."
+      - id: d
+        text: "Keycloak tries both hosts in turn."
+        explanation: "Not correct. It uses one value."
+    correct_option: b
+    explanation: "Correct. If a change in `env` does nothing, look in `args` first."
+
+  - id: ats088-030-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell build options and runtime options apart"
+    source_readings:
+      - sections/section-030/module-01/course-02-configuration-sources-and-build-options.md
+    prompt: "Which of these options is a build option?"
+    options:
+      - id: a
+        text: "`hostname`."
+        explanation: "Not correct. It is a runtime option, read at every start."
+      - id: b
+        text: "`db-url-host`."
+        explanation: "Not correct. The host is a runtime option."
+      - id: c
+        text: "`db`, the database vendor."
+        explanation: "Correct. A build option changes which parts of the server are put together."
+      - id: d
+        text: "`db-password`."
+        explanation: "Not correct. The password is a runtime option, and belongs in a Secret."
+    correct_option: c
+    explanation: "Correct. A build option changes which parts of the server are put together."
+
+  - id: ats088-030-q04
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know what production mode needs"
+    source_readings:
+      - sections/section-030/module-01/course-03-production-mode-hostname-and-health.md
+    prompt: "A pod that runs `kc.sh start` with no other options crashes. What does the log most likely say?"
+    options:
+      - id: a
+        text: "The realm `master` is missing."
+        explanation: "Not correct. Keycloak creates `master` on its first start."
+      - id: b
+        text: "The health endpoints are turned off."
+        explanation: "Not correct. That makes probes fail, but the server still starts."
+      - id: c
+        text: "The `dev-file` database is full."
+        explanation: "Not correct. The log names the hostname and transport choices."
+      - id: d
+        text: "The hostname is not configured, or no certificate is set up for HTTPS."
+        explanation: "Correct. Production mode is secure by default and does not start without these choices."
+    correct_option: d
+    explanation: "Correct. Production mode is secure by default and does not start without these choices."
+
+  - id: ats088-030-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the right fix for production mode"
+    source_readings:
+      - sections/section-030/module-01/course-03-production-mode-hostname-and-health.md
+    prompt: "There is no certificate in the cluster. Which options make production mode start with the issuer `http://keycloak:8080/realms/master`?"
+    options:
+      - id: a
+        text: "`--hostname-strict=false` only."
+        explanation: "Not correct. It lets any client choose the hostname in tokens and links, and it does not turn on HTTP."
+      - id: b
+        text: "`start-dev` instead of `start`."
+        explanation: "Not correct. The server starts, but with development defaults."
+      - id: c
+        text: "`--hostname=http://keycloak:8080` and `--http-enabled=true`."
+        explanation: "Correct. This gives the hostname and turns the HTTP listener back on."
+      - id: d
+        text: "`--optimized` only."
+        explanation: "Not correct. It skips the build step and does not set a hostname or HTTP."
+    correct_option: c
+    explanation: "Correct. This gives the hostname and turns the HTTP listener back on."
+
+  - id: ats088-030-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what hostname-strict protects"
+    source_readings:
+      - sections/section-030/module-01/course-03-production-mode-hostname-and-health.md
+    prompt: "With a hostname set and `hostname-strict` at `true`, a request arrives with the header `Host: localhost:8080`. Which issuer does Keycloak use?"
+    options:
+      - id: a
+        text: "The configured hostname. Keycloak ignores the `Host` header of the request."
+        explanation: "Correct. This stops a client from choosing the hostname in tokens and links."
+      - id: b
+        text: "`http://localhost:8080/realms/master`, from the `Host` header."
+        explanation: "Not correct. That is how development mode behaves."
+      - id: c
+        text: "No issuer. Keycloak answers `404`."
+        explanation: "Not correct. The request is answered with the fixed hostname."
+      - id: d
+        text: "Both issuers, in a list."
+        explanation: "Not correct. A token has one issuer."
+    correct_option: a
+    explanation: "Correct. This stops a client from choosing the hostname in tokens and links."
+
+  - id: ats088-030-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Map health endpoints to probes"
+    source_readings:
+      - sections/section-030/module-01/course-03-production-mode-hostname-and-health.md
+    prompt: "Which endpoint is used by the `readinessProbe`, and on which port does it answer?"
+    options:
+      - id: a
+        text: "`/health/live` on port `8080`."
+        explanation: "Not correct. `/health/live` is for the liveness probe, and health is served on the management port."
+      - id: b
+        text: "`/health/started` on port `8080`."
+        explanation: "Not correct. `/health/started` is for the startup probe."
+      - id: c
+        text: "`/health` on port `9000`."
+        explanation: "Not correct. `/health` shows all checks together and no probe uses it."
+      - id: d
+        text: "`/health/ready` on the management port `9000`."
+        explanation: "Correct. It also confirms that Keycloak can reach its database."
+    correct_option: d
+    explanation: "Correct. It also confirms that Keycloak can reach its database."
+
+  - id: ats088-030-q08
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know what dev-file does to data"
+    source_readings:
+      - sections/section-030/module-02/course-01-from-dev-file-to-postgresql.md
+    prompt: "You create a realm on a server that uses `dev-file`, then delete the pod. What happens to the realm?"
+    options:
+      - id: a
+        text: "It stays, because Kubernetes keeps the container file system."
+        explanation: "Not correct. A new pod starts without the old file system."
+      - id: b
+        text: "It is gone. The new pod starts with a new, empty `dev-file`."
+        explanation: "Correct. The file lives in the container's own file system."
+      - id: c
+        text: "It stays, because `master` stores all realms."
+        explanation: "Not correct. Realms are separate, and `master` does not hold their data."
+      - id: d
+        text: "It moves to PostgreSQL automatically."
+        explanation: "Not correct. Nothing moves unless you configure PostgreSQL."
+    correct_option: b
+    explanation: "Correct. The file lives in the container's own file system."
+
+  - id: ats088-030-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Configure the database from a Secret"
+    source_readings:
+      - sections/section-030/module-02/course-01-from-dev-file-to-postgresql.md
+    prompt: "How should the database password reach the Keycloak container?"
+    options:
+      - id: a
+        text: "As `KC_DB_PASSWORD` with a `secretKeyRef` to a Kubernetes Secret."
+        explanation: "Correct. The password then never appears in the Deployment."
+      - id: b
+        text: "As a plain `value` for `KC_DB_PASSWORD`."
+        explanation: "Not correct. Anyone who can read the Deployment can read it."
+      - id: c
+        text: "As `--db-password` in `args`."
+        explanation: "Not correct. It is also readable in the Deployment."
+      - id: d
+        text: "In the `Containerfile` as an `ENV` line."
+        explanation: "Not correct. Values built into the image can be read by anyone who pulls it."
+    correct_option: a
+    explanation: "Correct. The password then never appears in the Deployment."
+
+  - id: ats088-030-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what a startup import does to an existing realm"
+    source_readings:
+      - sections/section-030/module-02/course-02-importing-and-exporting-a-realm.md
+    prompt: "You edit the realm file in the ConfigMap and restart Keycloak with `--import-realm`. The realm already exists in PostgreSQL. What changes in the realm?"
+    options:
+      - id: a
+        text: "Keycloak updates the realm to match the file."
+        explanation: "Not correct. It never updates an existing realm."
+      - id: b
+        text: "Keycloak deletes the realm and creates it again."
+        explanation: "Not correct. It deletes nothing."
+      - id: c
+        text: "Nothing. A startup import skips a realm that already exists."
+        explanation: "Correct. A startup import creates a missing realm. It is not a sync."
+      - id: d
+        text: "Keycloak fails to start because the realm exists."
+        explanation: "Not correct. It starts and skips the realm."
+    correct_option: c
+    explanation: "Correct. A startup import creates a missing realm. It is not a sync."

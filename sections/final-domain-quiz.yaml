@@ -1,0 +1,222 @@
+# Final domain quiz. Listed in astrona.yaml as the last `type: quiz` entry.
+schema_version: 1
+kind: question_bank
+id: ats088-final
+course_id: ATS088
+exam_code: KEYCLOAK
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: domain
+  id: fundamentals-and-getting-started
+  title: "Keycloak: Fundamentals & Getting Started"
+placement:
+  position: after
+  reading: sections/section-030/capstone/labs/lab-01/question.md
+questions:
+  - id: ats088-final-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain what an identity provider does"
+    source_readings:
+      - sections/section-010/module-01/course-01-keycloak-in-the-cncf-landscape.md
+    prompt: "What does the application do when a user signs in through an identity provider such as Keycloak?"
+    options:
+      - id: a
+        text: "It sends the user to the identity provider, then checks the signature on the token it gets back and trusts what the token says."
+        explanation: "Correct. The identity provider checks the password. The application only checks the signature on the token."
+      - id: b
+        text: "It collects the user's password and passes it to Keycloak to check."
+        explanation: "Not correct. The application never sees the password. The user types it into Keycloak."
+      - id: c
+        text: "It asks Keycloak for the stored password hash and compares it itself."
+        explanation: "Not correct. Keycloak does not hand password hashes to applications."
+      - id: d
+        text: "It creates a new session on Keycloak for every request the user makes."
+        explanation: "Not correct. The application checks the token. It does not open a session on Keycloak for each request."
+    correct_option: a
+    explanation: "Correct. The identity provider checks the password. The application only checks the signature on the token."
+
+  - id: ats088-final-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell public and confidential clients apart"
+    source_readings:
+      - sections/section-010/module-01/course-02-oauth2-and-the-client-credentials-grant.md
+    prompt: "Why does Keycloak refuse the `client_credentials` grant for the public client `inventory-cli`?"
+    options:
+      - id: a
+        text: "The grant is turned off for the whole realm `inventory`."
+        explanation: "Not correct. The confidential client `inventory-reporter` uses the same grant in the same realm."
+      - id: b
+        text: "A public client cannot keep a secret and has no service account, so it cannot prove who it is."
+        explanation: "Correct. The client credentials grant needs a confidential client."
+      - id: c
+        text: "The token endpoint accepts this grant only from the `master` realm."
+        explanation: "Not correct. The grant works in any realm for a confidential client."
+      - id: d
+        text: "A public client may only use the SAML protocol."
+        explanation: "Not correct. The protocol is a setting of the client, and `inventory-cli` uses `openid-connect`."
+    correct_option: b
+    explanation: "Correct. The client credentials grant needs a confidential client."
+
+  - id: ats088-final-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose a protocol for a new application"
+    source_readings:
+      - sections/section-010/module-01/course-04-saml-and-choosing-a-protocol.md
+    prompt: "A new web application must also call an API with an access token. Which protocol does the course rule choose?"
+    options:
+      - id: a
+        text: "SAML 2.0, because it is the older and more tested standard."
+        explanation: "Not correct. SAML has no token for APIs."
+      - id: b
+        text: "SAML 2.0, because it signs with XML Signature."
+        explanation: "Not correct. The signature format does not decide, and SAML gives no API token."
+      - id: c
+        text: "OpenID Connect, because only OAuth 2.0 and OpenID Connect give the application an access token."
+        explanation: "Correct. Use SAML only when the application supports nothing else."
+      - id: d
+        text: "Either one, because the format of the assertion does not matter to an API."
+        explanation: "Not correct. An API needs an access token, and SAML does not provide one."
+    correct_option: c
+    explanation: "Correct. Use SAML only when the application supports nothing else."
+
+  - id: ats088-final-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know when the bootstrap variables take effect"
+    source_readings:
+      - sections/section-020/module-01/course-01-the-master-realm-and-the-bootstrap-admin.md
+    prompt: "You change the Secret `keycloak-admin` and restart the pod. The database already holds the realm `master`. What happens to the administrator password?"
+    options:
+      - id: a
+        text: "Keycloak sets the new password at the restart."
+        explanation: "Not correct. An existing administrator is not changed."
+      - id: b
+        text: "Keycloak refuses to start until the old password is removed."
+        explanation: "Not correct. It starts, and it logs an error."
+      - id: c
+        text: "Keycloak creates a second administrator with the new password."
+        explanation: "Not correct. No second user is created."
+      - id: d
+        text: "It stays the same. Keycloak logs an error and starts anyway."
+        explanation: "Correct. The variables only matter when `master` does not exist yet."
+    correct_option: d
+    explanation: "Correct. The variables only matter when `master` does not exist yet."
+
+  - id: ats088-final-q05
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know what a new realm contains"
+    source_readings:
+      - sections/section-020/module-01/course-02-what-a-realm-holds.md
+    prompt: "You create the realm `demo` and open **Clients**. What do you see?"
+    options:
+      - id: a
+        text: "Built-in clients such as `account`, `account-console`, `admin-cli` and `security-admin-console`."
+        explanation: "Correct. A new realm is not empty. It also has signing keys."
+      - id: b
+        text: "An empty list."
+        explanation: "Not correct. Keycloak creates built-in clients when it creates the realm."
+      - id: c
+        text: "A copy of every client in `master`."
+        explanation: "Not correct. Clients belong to one realm and are not copied."
+      - id: d
+        text: "Only the client `inventory-cli`."
+        explanation: "Not correct. That client exists only if you create it."
+    correct_option: a
+    explanation: "Correct. A new realm is not empty. It also has signing keys."
+
+  - id: ats088-final-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why realms are isolated"
+    source_readings:
+      - sections/section-020/module-01/course-02-what-a-realm-holds.md
+    prompt: "Why can a token signed by the realm `demo` not pass a signature check against the keys of `master`?"
+    options:
+      - id: a
+        text: "Both realms share one key, but `demo` signs with a different algorithm."
+        explanation: "Not correct. Realms do not share keys."
+      - id: b
+        text: "Each realm signs with its own key pairs, so the `kid` values differ."
+        explanation: "Correct. An API that trusts one issuer rejects tokens from every other realm."
+      - id: c
+        text: "The realm `demo` does not sign its tokens."
+        explanation: "Not correct. Every realm signs its tokens."
+      - id: d
+        text: "Tokens from other realms expire at once."
+        explanation: "Not correct. Expiry is the `exp` claim and is not tied to the realm of the checker."
+    correct_option: b
+    explanation: "Correct. An API that trusts one issuer rejects tokens from every other realm."
+
+  - id: ats088-final-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know which configuration source wins"
+    source_readings:
+      - sections/section-030/module-01/course-02-configuration-sources-and-build-options.md
+    prompt: "`KC_DB_URL_HOST=postgres-a` is set in `env` and `--db-url-host=postgres-b` is set in `args`. Which host does Keycloak use?"
+    options:
+      - id: a
+        text: "`postgres-a`, because environment variables win over command-line options."
+        explanation: "Not correct. The order is command line, environment variable, `keycloak.conf`, key store."
+      - id: b
+        text: "Keycloak fails to start because the two values differ."
+        explanation: "Not correct. It uses the winner and does not report the other one."
+      - id: c
+        text: "`postgres-b`, because a command-line option wins over an environment variable."
+        explanation: "Correct. If a change in `env` does nothing, look in `args` first."
+      - id: d
+        text: "Keycloak tries both hosts in turn."
+        explanation: "Not correct. It uses one value."
+    correct_option: c
+    explanation: "Correct. If a change in `env` does nothing, look in `args` first."
+
+  - id: ats088-final-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what hostname-strict protects"
+    source_readings:
+      - sections/section-030/module-01/course-03-production-mode-hostname-and-health.md
+    prompt: "With a hostname set and `hostname-strict` at `true`, a request arrives with the header `Host: localhost:8080`. Which issuer does Keycloak use?"
+    options:
+      - id: a
+        text: "`http://localhost:8080/realms/master`, from the `Host` header."
+        explanation: "Not correct. That is how development mode behaves."
+      - id: b
+        text: "No issuer. Keycloak answers `404`."
+        explanation: "Not correct. The request is answered with the fixed hostname."
+      - id: c
+        text: "Both issuers, in a list."
+        explanation: "Not correct. A token has one issuer."
+      - id: d
+        text: "The configured hostname. Keycloak ignores the `Host` header of the request."
+        explanation: "Correct. This stops a client from choosing the hostname in tokens and links."
+    correct_option: d
+    explanation: "Correct. This stops a client from choosing the hostname in tokens and links."
+
+  - id: ats088-final-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what a startup import does to an existing realm"
+    source_readings:
+      - sections/section-030/module-02/course-02-importing-and-exporting-a-realm.md
+    prompt: "You edit the realm file in the ConfigMap and restart Keycloak with `--import-realm`. The realm already exists in PostgreSQL. What changes in the realm?"
+    options:
+      - id: a
+        text: "Nothing. A startup import skips a realm that already exists."
+        explanation: "Correct. A startup import creates a missing realm. It is not a sync."
+      - id: b
+        text: "Keycloak updates the realm to match the file."
+        explanation: "Not correct. It never updates an existing realm."
+      - id: c
+        text: "Keycloak deletes the realm and creates it again."
+        explanation: "Not correct. It deletes nothing."
+      - id: d
+        text: "Keycloak fails to start because the realm exists."
+        explanation: "Not correct. It starts and skips the realm."
+    correct_option: a
+    explanation: "Correct. A startup import creates a missing realm. It is not a sync."
