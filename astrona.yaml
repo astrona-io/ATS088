@@ -13,7 +13,7 @@
 training:
   id: ATS088
   title: "Keycloak: Fundamentals & Getting Started"
-  maturity: draft
+  maturity: alpha
   description: >
     Training material covering the Fundamentals & Getting Started domain of
     the Keycloak training path: where Keycloak sits in the CNCF identity and

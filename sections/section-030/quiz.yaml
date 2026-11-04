@@ -4,7 +4,7 @@ kind: question_bank
 id: ats088-030
 course_id: ATS088
 exam_code: KEYCLOAK
-status: draft
+status: alpha
 provenance: Original practice material written for this course; not official exam questions.
 scope:
   type: section
